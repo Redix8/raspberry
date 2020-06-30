@@ -25,24 +25,27 @@ plant1.columns = col
 plant2.columns = col
 weather.columns = ['fcTime', 'temp_25', 'temp_46', 'humid_25', 'humid_46', 'rain_25', 'rain_46', 'wind_25', 'wind_46']
 
+plant1.dropna(inplace = True)
+plant2.dropna(inplace = True)
 
-# PlantOneEnviron.objects.all().delete()
+PlantOneEnviron.objects.all().delete()
+PlantTwoEnviron.objects.all().delete()
+WeatherForecast.objects.all().delete()
 
-# for i in range(len(plant1)):
-#     data = plant1.iloc[i, :].to_dict()
-#     data['recTime'] = data['recTime'].to_pydatetime()
-#     PlantOneEnviron(**data).save()        
-    
-# PlantTwoEnviron.objects.all().delete()
+plant1['recTime'] = plant1['recTime'].apply(lambda x : x.to_pydatetime())
+plant2['recTime'] = plant2['recTime'].apply(lambda x : x.to_pydatetime())
+weather['fcTime'] = weather['fcTime'].apply(lambda x : x.to_pydatetime())
 
-# for i in range(len(plant2)):
-#     data = plant2.iloc[i, :].to_dict()
-#     data['recTime'] = data['recTime'].to_pydatetime()
-#     PlantTwoEnviron(**data).save()       
+PlantOneEnviron.objects.bulk_create(
+    PlantOneEnviron(**vals) for vals in plant1.to_dict('records')
+)
 
+PlantTwoEnviron.objects.bulk_create(
+    PlantTwoEnviron(**vals) for vals in plant2.to_dict('records')
+)
 
-# for i in range(len(weather)):
-#     data = weather.iloc[i, :].to_dict()
-#     data['fcTime'] = data['fcTime'].to_pydatetime()
-#     WeatherForecast(**data).save()    
+WeatherForecast.objects.bulk_create(
+    WeatherForecast(**vals) for vals in weather.to_dict('records')
+)
+
 
