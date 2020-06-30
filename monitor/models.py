@@ -2,14 +2,75 @@ from django.db import models
 
 # Create your models here.
 class PlantOneEnviron(models.Model):
-    pass
+    recTime       = models.DateTimeField()
+    tem_in_loc1	  = models.FloatField()
+    hum_in_loc1	  = models.FloatField()
+    tem_coil_loc1 = models.FloatField()
+    tem_in_loc2	  = models.FloatField()
+    hum_in_loc2	  = models.FloatField()
+    tem_coil_loc2 = models.FloatField()	
+    tem_in_loc3	  = models.FloatField()  
+    hum_in_loc3	  = models.FloatField()  
+    tem_coil_loc3 = models.FloatField()	    
+    tem_out_loc1  = models.FloatField()	
+    hum_out_loc1  = models.FloatField()   
+    cond_loc1	  = models.BooleanField()
+    cond_loc2	  = models.BooleanField()
+    cond_loc3     = models.BooleanField()
 
 class PlantTwoEnviron(models.Model):
-    pass
+    recTime       = models.DateTimeField()
+    tem_in_loc1	  = models.FloatField()
+    hum_in_loc1	  = models.FloatField()
+    tem_coil_loc1 = models.FloatField()
+    tem_in_loc2	  = models.FloatField()
+    hum_in_loc2	  = models.FloatField()
+    tem_coil_loc2 = models.FloatField()	
+    tem_in_loc3	  = models.FloatField()  
+    hum_in_loc3	  = models.FloatField()  
+    tem_coil_loc3 = models.FloatField()	    
+    tem_out_loc1  = models.FloatField()	
+    hum_out_loc1  = models.FloatField()   
+    cond_loc1	  = models.BooleanField()
+    cond_loc2	  = models.BooleanField()
+    cond_loc3     = models.BooleanField()
 
 class WeatherForecast(models.Model):
-    pass
+    fcTime   = models.DateTimeField()
+    temp_25	 = models.FloatField() 
+    temp_46	 = models.FloatField()      
+    humid_25 = models.FloatField()      	
+    humid_46 = models.FloatField()      	
+    rain_25	 = models.FloatField()      
+    rain_46	 = models.FloatField()      
+    wind_25	 = models.FloatField()      
+    wind_46  = models.FloatField()   
 
-class Prediction(models.Model):
-    pass
-
+class Prediction24(models.Model):
+    recTime       = models.DateTimeField()
+    tem_in_loc1	  = models.FloatField()
+    hum_in_loc1	  = models.FloatField()
+    tem_coil_loc1 = models.FloatField()
+    tem_in_loc2	  = models.FloatField()
+    hum_in_loc2	  = models.FloatField()
+    tem_coil_loc2 = models.FloatField()	
+    tem_in_loc3	  = models.FloatField()  
+    hum_in_loc3	  = models.FloatField()  
+    tem_coil_loc3 = models.FloatField()	    
+    tem_out_loc1  = models.FloatField()	
+    hum_out_loc1  = models.FloatField() 
+    
+class Prediction48(models.Model):
+    recTime       = models.DateTimeField()
+    tem_in_loc1	  = models.FloatField()
+    hum_in_loc1	  = models.FloatField()
+    tem_coil_loc1 = models.FloatField()
+    tem_in_loc2	  = models.FloatField()
+    hum_in_loc2	  = models.FloatField()
+    tem_coil_loc2 = models.FloatField()	
+    tem_in_loc3	  = models.FloatField()  
+    hum_in_loc3	  = models.FloatField()  
+    tem_coil_loc3 = models.FloatField()	    
+    tem_out_loc1  = models.FloatField()	
+    hum_out_loc1  = models.FloatField() 
+    
