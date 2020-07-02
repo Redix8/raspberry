@@ -12,8 +12,8 @@ from monitor.models import PlantEnviron, WeatherForecast
 
 path = os.path.abspath(os.path.join(os.path.dirname(__file__), './.data'))
 
-plant1 = pd.read_csv(path + '/plant1_train.csv', parse_dates=[0])
-plant2 = pd.read_csv(path + '/plant2_train.csv', parse_dates=[0])
+plant1 = pd.read_csv(path + '/plant1_test_split.csv', parse_dates=[0])
+plant2 = pd.read_csv(path + '/plant2_test_split.csv', parse_dates=[0])
 weather = pd.read_csv(path + '/weather4.csv', parse_dates=[0])
 
 col = [

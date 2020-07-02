@@ -2,6 +2,7 @@ import os
 import pickle
 import numpy as np
 import pandas as pd
+from lightgbm.sklearn import LGBMRegressor, LGBMClassifier
 import django
 from django.conf import settings
 
@@ -90,8 +91,8 @@ with open('models/forecast_model.bin','rb') as f:
 with open('models/scalers.bin','rb') as f:
     scalers = pickle.load(f)
 
-# with open('models/classifiers.bin','rb') as f:
-#     classifiers = pickle.load(f)
+with open('models/classifiers.bin','rb') as f:
+    classifiers = pickle.load(f)
 
 # plant1 predict
 plant1_pred = pd.DataFrame()
@@ -175,38 +176,39 @@ print(plant1_pred)
 ###################################################################################################
 
 # 1공장 결로 예측
-# test_pred = {}
-# for time_label in ['y25', 'y46']:
-#     X_time = plant1_pred.filter(regex=f'{time_label}')
-#     for loc_label in ['loc1', 'loc2', 'loc3']:
-#         print(f'pred : {loc_label}_{time_label}')
-#         in_col = X_time.filter(regex=f'(in|coil)_{loc_label}').columns.to_list()
-#         out_col = X_time.filter(regex=f'out_loc1').columns.to_list()
-#         date_col = ['month','day', 'hour']
-#         tcol = in_col + out_col + date_col
+test_pred = {}
+for time_label in ['y25', 'y46']:
+    X_time = plant1_pred.filter(regex=f'{time_label}')
+    for loc_label in ['loc1', 'loc2', 'loc3']:
+        print(f'pred : {loc_label}_{time_label}')
+        in_col = X_time.filter(regex=f'(in|coil)_{loc_label}').columns.to_list()
+        out_col = X_time.filter(regex=f'out_loc1').columns.to_list()
+        date_col = ['month','day', 'hour']
+        tcol = in_col + out_col + date_col
 
-#         p = np.zeros(X_time.shape[0])
-#         for m in classifiers['1'][f'{time_label}_{loc_label}']:
-#             p += (m.predict_proba( X_time[tcol] )/5)[:, 1].reshape(-1,)[0]
-#             p_cond = np.where(p>0.3, 1, 0)
-#         test_pred[f'{loc_label}_{time_label}'] = p_cond
+        p = np.zeros(X_time.shape[0])
+        for m in classifiers['1'][f'{time_label}_{loc_label}']:
+            p += (m.predict_proba( plant1_pred[tcol] )/5)[:, 1].reshape(-1,)[0]
+            p_cond = np.where(p>0.3, 1, 0)
+        test_pred[f'{loc_label}_{time_label}'] = p_cond
+print(test_pred)
 
-# # 2공장 결로 예측
-# test2_pred = {}
-# for time_label in ['y25', 'y46']:
-#     X_time = plant2_pred.filter(regex=f'{time_label}')
-#     for loc_label in ['loc1', 'loc2', 'loc3']:
-#         print(f'pred : {loc_label}_{time_label}')
-#         in_col = X_time.filter(regex=f'(in|coil)_{loc_label}').columns.to_list()
-#         out_col = X_time.filter(regex=f'out_loc1').columns.to_list()
-#         date_col = ['month','day', 'hour']
-#         tcol = in_col + out_col + date_col
+# 2공장 결로 예측
+test2_pred = {}
+for time_label in ['y25', 'y46']:
+    X_time = plant2_pred.filter(regex=f'{time_label}')
+    for loc_label in ['loc1', 'loc2', 'loc3']:
+        print(f'pred : {loc_label}_{time_label}')
+        in_col = X_time.filter(regex=f'(in|coil)_{loc_label}').columns.to_list()
+        out_col = X_time.filter(regex=f'out_loc1').columns.to_list()
+        date_col = ['month','day', 'hour']
+        tcol = in_col + out_col + date_col
 
-#         p = np.zeros(X_time.shape[0])
-#         for m in classifiers['1'][f'{time_label}_{loc_label}']:
-#             p += (m.predict_proba( X_time[tcol] )/5)[:, 1].reshape(-1,)[0]
-#             p_cond = np.where(p>0.3, 1, 0)
-#         test2_pred[f'{loc_label}_{time_label}'] = p_cond
+        p = np.zeros(X_time.shape[0])
+        for m in classifiers['1'][f'{time_label}_{loc_label}']:
+            p += (m.predict_proba( plant2_pred[tcol] )/5)[:, 1].reshape(-1,)[0]
+            p_cond = np.where(p>0.3, 1, 0)
+        test2_pred[f'{loc_label}_{time_label}'] = p_cond
 
 
 
