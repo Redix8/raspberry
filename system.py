@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import django
 import time
+from django_pandas.io import read_frame
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "raspberry.settings")
 django.setup()
@@ -19,7 +20,7 @@ with open('models/scalers.bin', 'rb') as f:
 
 plant1_new = pd.read_csv('.data/plant1_test_split.csv', parse_dates=[0])
 plant2_new = pd.read_csv('.data/plant2_test_split.csv', parse_dates=[0])
-
+forecast = read_frame(WeatherForecast.objects.all())
 
 for i in range(len(plant1_new)):
     start_time = time.time()
@@ -41,10 +42,11 @@ for i in range(len(plant1_new)):
 
     # 2차 예측 시행
 
+    print('Predict Done')
     # 1차, 2차 예측 DB 저장
 
     # update는 1시간마다 이루어져야 하지만 시뮬레이션을 위해서 2분으로 설정한다.
-    while start_time - time.time() < 2*60:
+    while time.time() - start_time < 2*60:
         continue
     print('Data Updated')
 
