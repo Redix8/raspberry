@@ -1,4 +1,5 @@
 from django.db import models
+from django_pandas.managers import DataFrameManager
 
 
 class PlantEnviron(models.Model):
@@ -20,6 +21,8 @@ class PlantEnviron(models.Model):
     cond_loc2	  = models.BooleanField()
     cond_loc3     = models.BooleanField()
 
+    objects = DataFrameManager()
+
 
 class WeatherForecast(models.Model):
     fcTime   = models.DateTimeField()
@@ -31,6 +34,8 @@ class WeatherForecast(models.Model):
     rain_46	 = models.FloatField()      
     wind_25	 = models.FloatField()      
     wind_46  = models.FloatField()   
+
+    objects = DataFrameManager()
 
 
 class Prediction(models.Model):

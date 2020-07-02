@@ -1,13 +1,19 @@
+/* {% load static %} */
+
 .login {
-    color: white;
-    margin-top: 200px;
+    color: darkcyan;
+    margin-top: 250px;
+    font-size: 36pt;
+    padding: 40px 20px 20px 40px;
+    font-family: 'Lobster', cursive;
 }
 
 .text-center {
-    color: white;
+    color: black;
 }
 
 body {
-    background-color: darkcyan;
+    background-color: skyblue;
+    background-image: url(background.jpg);
 }
 
