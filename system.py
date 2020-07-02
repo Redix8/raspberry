@@ -47,7 +47,7 @@ for i in range(len(plant1_new)):
     df1 = pd.DataFrame(columns=col)
     df1 = df1.append(new1)
     df1.index = df1.recTime
-    new1['plant'] = 1
+    df1['plant'] = '1'
 
     new2.index = col
     new2.recTime = pd.to_datetime(new2.recTime)
@@ -55,15 +55,15 @@ for i in range(len(plant1_new)):
     df2 = pd.DataFrame(columns=col)
     df2 = df2.append(new1)
     df2.index = df2.recTime
-    new2['plant'] = 2
+    df2['plant'] = '2'
 
-    # PlantEnviron.objects.bulk_create(
-    # PlantEnviron(**vals) for vals in new1.to_dict('records')
-    # )
+    PlantEnviron.objects.bulk_create(
+    PlantEnviron(**vals) for vals in df1.to_dict('records')
+    )
 
-    # PlantEnviron.objects.bulk_create(
-    # PlantEnviron(**vals) for vals in new2.to_dict('records')
-    # )
+    PlantEnviron.objects.bulk_create(
+    PlantEnviron(**vals) for vals in df2.to_dict('records')
+    )
 
     # 날씨 데이터( 전처리 했다고 가정하고 DB에서 불러온다)
 
@@ -219,26 +219,26 @@ for i in range(len(plant1_new)):
     plant1_save_24 = plant1_pred_step1.filter(regex='y25')
     plant1_save_24 = plant1_save_24.reset_index()
     plant1_save_24.columns = f_cols
-    plant1_save_24['plant'] = 1
-    plant1_save_24['forecast'] = 24
+    plant1_save_24['plant'] = '1'
+    plant1_save_24['forecast'] = '24'
 
     plant1_save_48 = plant1_pred_step1.filter(regex='y46')
     plant1_save_48 = plant1_save_48.reset_index()
     plant1_save_48.columns = f_cols
-    plant1_save_48['plant'] = 1
-    plant1_save_48['forecast'] = 48
+    plant1_save_48['plant'] = '1'
+    plant1_save_48['forecast'] = '48'
 
     plant2_save_24 = plant2_pred_step1.filter(regex='y25')
     plant2_save_24 = plant2_save_24.reset_index()
     plant2_save_24.columns = f_cols
-    plant2_save_24['plant'] = 2
-    plant2_save_24['forecast'] = 24
+    plant2_save_24['plant'] = '2'
+    plant2_save_24['forecast'] = '24'
 
     plant2_save_48 = plant2_pred_step1.filter(regex='y46')
     plant2_save_48 = plant2_save_48.reset_index()
     plant2_save_48.columns = f_cols
-    plant2_save_48['plant'] = 2
-    plant2_save_48['forecast'] = 48
+    plant2_save_48['plant'] = '2'
+    plant2_save_48['forecast'] = '48'
 
     for key in test_pred:
         if (key[-3:]) == 'y25':
@@ -272,18 +272,18 @@ for i in range(len(plant1_new)):
             if (key[:4]) == 'loc3':
                 plant2_save_48['cond_loc3'] = test2_pred['loc3_y46'][0]
 
-    # Prediction.objects.bulk_create(
-    # Prediction(**vals) for vals in plant1_save_24.to_dict('records')
-    # )
-    # Prediction.objects.bulk_create(
-    # Prediction(**vals) for vals in plant1_save_48.to_dict('records')
-    # )
-    #  Prediction.objects.bulk_create(
-    # Prediction(**vals) for vals in plant2_save_24.to_dict('records')
-    # )
-    #  Prediction.objects.bulk_create(
-    # Prediction(**vals) for vals in plant2_save_48.to_dict('records')
-    # )
+    Prediction.objects.bulk_create(
+    Prediction(**vals) for vals in plant1_save_24.to_dict('records')
+    )
+    Prediction.objects.bulk_create(
+    Prediction(**vals) for vals in plant1_save_48.to_dict('records')
+    )
+    Prediction.objects.bulk_create(
+    Prediction(**vals) for vals in plant2_save_24.to_dict('records')
+    )
+    Prediction.objects.bulk_create(
+    Prediction(**vals) for vals in plant2_save_48.to_dict('records')
+    )
 
     # update는 1시간마다 이루어져야 하지만 시뮬레이션을 위해서 2분으로 설정한다.
 
