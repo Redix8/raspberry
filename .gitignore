@@ -149,4 +149,4 @@ cython_debug/
 .idea
 
 # classifier
-models/classifier.bin
+models/classifiers.bin
