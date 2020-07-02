@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
-from .forms import CustomUserChangeForm, ProfileForm
+from .forms import CustomUserChangeForm, ProfileForm, CustomAuthenticationForm
 from django.contrib.auth import update_session_auth_hash
 from .models import Profile
 from django.contrib.auth.decorators import login_required
@@ -52,7 +52,8 @@ def login(request):
     if request.method == 'POST':
         # User 검증 + 로그인
         # 1. POST로 넘어온 데이터 form에 넣기
-        form = AuthenticationForm(request, request.POST)
+        #form = AuthenticationForm(request, request.POST)
+        form = CustomAuthenticationForm(request, request.POST)
         # 2. form 검증 (아이디, 비밀번호 맞음?)
         if form.is_valid():
             # 3. 맞으면, 로그인 시켜줌
@@ -68,7 +69,8 @@ def login(request):
 
     else:
         # User 로그인 창 보여주기
-        form = AuthenticationForm()
+        #form = AuthenticationForm()
+        form = CustomAuthenticationForm()
     context = {
         'form': form,
     }
