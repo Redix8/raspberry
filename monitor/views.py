@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 
 from plotly.offline import plot #plotly
 from plotly.graph_objs import *
-import plotly.plotly as py
 
 from .models import PlantEnviron, WeatherForecast
 # Create your views here.
