@@ -1,6 +1,9 @@
 astroid==2.4.2
 colorama==0.4.3
 Django==2.2.13
+django-appconf==1.0.4
+django-imagekit==4.0.2
+django-pandas==0.6.2
 imbalanced-learn==0.7.0
 imblearn==0.0
 isort==4.3.21
@@ -9,6 +12,8 @@ lazy-object-proxy==1.4.3
 mccabe==0.6.1
 numpy==1.19.0
 pandas==1.0.5
+pilkit==2.0
+Pillow==7.2.0
 plotly==4.8.2
 pylint==2.5.3
 python-dateutil==2.8.1
