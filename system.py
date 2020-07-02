@@ -4,12 +4,9 @@ import numpy as np
 import pandas as pd
 import django
 import time
-<<<<<<< HEAD
 from django_pandas.io import read_frame
-=======
 import datetime
 from copy import deepcopy
->>>>>>> junhyung
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "raspberry.settings")
 django.setup()
@@ -68,11 +65,8 @@ for i in range(len(plant1_new)):
     # PlantEnviron(**vals) for vals in new2.to_dict('records')
     # )
 
-
-
-
-
     # 날씨 데이터( 전처리 했다고 가정하고 DB에서 불러온다)
+
     fc_col = ['fcTime', 'temp_25', 'temp_46', 'humid_25', 'humid_46', 'rain_25', 'rain_46', 'wind_25', 'wind_46']
     fc = pd.DataFrame(columns=fc_col)
 
@@ -86,10 +80,6 @@ for i in range(len(plant1_new)):
     
     fc.index = fc.fcTime
     fc.drop('fcTime',axis=1,inplace=True)
-
-
-
-
 
     # # 1차 예측을 위해서 데이터 처리(feature 생성)
     data  = pd.concat([df1,fc], axis=1)
@@ -105,11 +95,8 @@ for i in range(len(plant1_new)):
     ma24 = test2_X.rolling(24).mean().filter(regex='(25|46)').add_prefix('MA24_')
     test2_X = pd.concat([test2_X, ma6, ma24], axis=1).dropna()
 
-
-
-
     # 1차 예측
-    ### plant 1
+    # plant 1
     plant1_pred_step1 = pd.DataFrame()
     for col in forecasters['1']:
         preds = []
@@ -131,7 +118,7 @@ for i in range(len(plant1_new)):
         plant1_pred_step1[col] = pred  
     plant1_pred_step1.index = test_X.index
 
-    ### plant 2
+    # plant 2
     plant2_pred_step1 = pd.DataFrame()
     for col in forecasters['2']:
         preds = []
@@ -153,16 +140,12 @@ for i in range(len(plant1_new)):
         plant2_pred_step1[col] = pred  
     plant2_pred_step1.index = test_X.index
 
-
-
-
-
     # 1차 예측으로 2차 예측 시작
     # 2차 예측을 위해서 데이터 처리(feature 생성)
     plant1_pred = deepcopy(plant1_pred_step1)
     plant2_pred = deepcopy(plant2_pred_step1)
 
-    ### plant1 전처리
+    # plant1 전처리
     tem_col = plant1_pred.filter(regex='tem_in_').columns
     hum_col = plant1_pred.filter(regex='hum_in_').columns
     coil_col = plant1_pred.filter(regex='coil_').columns
@@ -177,7 +160,7 @@ for i in range(len(plant1_new)):
     plant1_pred['day'] = plant1_pred.index.day
     plant1_pred['hour'] = plant1_pred.index.hour
 
-    ### plant2 전처리
+    # plant2 전처리
     tem_col = plant2_pred.filter(regex='tem_in_').columns
     hum_col = plant2_pred.filter(regex='hum_in_').columns
     coil_col = plant2_pred.filter(regex='coil_').columns
@@ -193,7 +176,7 @@ for i in range(len(plant1_new)):
     plant2_pred['hour'] = plant2_pred.index.hour
 
     # 2차 예측 시행
-    ### plant1 결로 예측
+    # plant1 결로 예측
     test_pred = {}
     for time_label in ['y25', 'y46']:
         X_time = plant1_pred.filter(regex=f'{time_label}')
@@ -204,15 +187,13 @@ for i in range(len(plant1_new)):
             date_col = ['month','day', 'hour']
             tcol = in_col + out_col + date_col
 
-<<<<<<< HEAD
-    print('Predict Done')
-=======
             p = np.zeros(X_time.shape[0])
             for m in classifiers['1'][f'{time_label}_{loc_label}']:
                 p += (m.predict_proba( plant1_pred[tcol] )/5)[:, 1].reshape(-1,)
                 p_cond = np.where(p>0.3, 1, 0)
             test_pred[f'{loc_label}_{time_label}'] = p_cond
-    ### plant2 결로 예측
+
+    # plant2 결로 예측
     test2_pred = {}
     for time_label in ['y25', 'y46']:
         X_time = plant2_pred.filter(regex=f'{time_label}')
@@ -228,8 +209,7 @@ for i in range(len(plant1_new)):
                 p += (m.predict_proba( plant2_pred[tcol] )/5)[:, 1].reshape(-1,)[0]
                 p_cond = np.where(p>0.3, 1, 0)
             test2_pred[f'{loc_label}_{time_label}'] = p_cond
-    
->>>>>>> junhyung
+
     # 1차, 2차 예측 DB 저장
     f_cols = ['recTime', 'tem_in_loc1', 'hum_in_loc1', 'tem_coil_loc1',
         'tem_in_loc2', 'hum_in_loc2', 'tem_coil_loc2',
@@ -305,17 +285,17 @@ for i in range(len(plant1_new)):
     # Prediction(**vals) for vals in plant2_save_48.to_dict('records')
     # )
 
-
     # update는 1시간마다 이루어져야 하지만 시뮬레이션을 위해서 2분으로 설정한다.
-<<<<<<< HEAD
+
     while time.time() - start_time < 2*60:
         continue
     print('Data Updated')
-=======
+
     # while start_time - time.time() < 2*60:
     #     continue
     # print('Data Updated')
->>>>>>> junhyung
+
+
 
 
 
