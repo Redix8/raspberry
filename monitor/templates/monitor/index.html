@@ -11,7 +11,7 @@
             <div class="collapse navbar-collapse justify-content-md-center" id="navbarTop">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item text-nowrap">
-                        <a class="nav-link" href="#">Plant1</a>
+                        <a class="nav-link" href="{% url 'monitor:plant1' %}">Plant1</a>
                     </li>
                     <li class="nav-item text-nowrap">
                         <a class="nav-link" href="#">Plant2</a>
@@ -25,5 +25,9 @@
             </form>
         </div>
     </nav>
+
+    {% block plant %}
+
+    {% endblock %}
 
 {% endblock body %}
