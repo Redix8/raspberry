@@ -1,12 +1,21 @@
 {% extends 'base.html' %}
 
+{% load static %}
 
 {% block body %}
 
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Login">
-</form>
+<div class="container text-center">
+    <h1 class="login">Don't Rust</h1>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Login">
+    
+    </form>
+    <!-- <a href="{% url 'accounts:signup' %}">
+        회원가입
+    </a> -->
+</div>
 
-{% endblock body %}
+
+{% endblock %}

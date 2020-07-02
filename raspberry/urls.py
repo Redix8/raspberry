@@ -18,8 +18,9 @@ from django.urls import path, include
 from django.shortcuts import redirect
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('monitor/', include('monitor.urls')),
-    path('accounts/', include('accounts.urls')),
+    path('admin/', admin.site.urls), #관리자
+    path('monitor/', include('monitor.urls')), #메인
+    path('accounts/', include('accounts.urls')), #로그인
+    #path('plotly_django_tutorial/', include('plotly_django_tutorial.urls')),
     path('', lambda r: redirect("monitor:index"), name='root'),
 ]

@@ -10,7 +10,7 @@ django.setup()
 from monitor.models import PlantOneEnviron, PlantTwoEnviron, WeatherForecast
 
 
-path = os.path.abspath(os.path.join(os.path.dirname(__file__), './.data'))
+path = os.path.abspath(os.path.join(os.path.dirname(__file__), './data'))
 print(path)
 
 plant1 = pd.read_csv(path + '/plant1_train.csv', parse_dates=[0])
