@@ -15,6 +15,14 @@ def index(request):
     }
     return render(request, 'monitor/index.html', context)
 
+def chart(request):
+
+    context = {
+        
+    }
+    return render(request, 'monitor/chart.html', context)
+
+
 def line(request):
     # articles = Article.objects.all()
     envs = WeatherForecast.objects.all() 
