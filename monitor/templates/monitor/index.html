@@ -17,6 +17,19 @@
                         <a class="nav-link" href="{% url 'monitor:plant' 2 %}">Plant2</a>
                     </li>
 
+                    {% if plant %}
+                        <li class="nav-item text-nowrap">
+                            <a class="nav-link" href="{% url 'monitor:loc' plant 1 %}">LOC1</a>
+                        </li>
+                        <li class="nav-item text-nowrap">
+                            <a class="nav-link" href="{% url 'monitor:loc' plant 2 %}">LOC2</a>
+                        </li>
+                        <li class="nav-item text-nowrap">
+                            <a class="nav-link" href="{% url 'monitor:loc' plant 3 %}">LOC3</a>
+                        </li>
+
+                    {% endif %}
+
                 </ul>
             </div>
             <form action="{% url 'accounts:logout' %}" method="POST">

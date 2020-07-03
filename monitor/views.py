@@ -20,7 +20,7 @@ def index(request):
 @login_required
 def plant(request, plant):
     context = {
-
+        'plant':plant,
     }
     return render(request, 'monitor/plant.html', context)
 
@@ -28,7 +28,8 @@ def plant(request, plant):
 @login_required
 def loc(request, plant, loc):
     context = {
-
+        'plant': plant,
+        'loc': loc,
     }
     return render(request, 'monitor/loc.html', context)
 
