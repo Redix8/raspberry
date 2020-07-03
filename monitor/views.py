@@ -8,6 +8,7 @@ import plotly.graph_objs as go
 from .models import PlantEnviron, WeatherForecast
 # Create your views here.
 
+
 @login_required
 def index(request):
     context = {
@@ -15,12 +16,12 @@ def index(request):
     }
     return render(request, 'monitor/index.html', context)
 
-def chart(request):
-
+@login_required
+def plant1(request):
     context = {
-        
+
     }
-    return render(request, 'monitor/chart.html', context)
+    return render(request, 'monitor/plant1.html', context)
 
 
 def line(request):
