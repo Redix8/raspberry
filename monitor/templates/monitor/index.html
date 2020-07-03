@@ -4,17 +4,17 @@
 
     <nav class="navbar navbar-expand navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Don't Rust</a>
+            <a class="navbar-brand" href="{% url 'monitor:index' %}">Don't Rust</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTop" aria-controls="navbarTop" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-md-center" id="navbarTop">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item text-nowrap">
-                        <a class="nav-link" href="{% url 'monitor:plant1' %}">Plant1</a>
+                        <a class="nav-link" href="{% url 'monitor:plant' 1 %}">Plant1</a>
                     </li>
                     <li class="nav-item text-nowrap">
-                        <a class="nav-link" href="#">Plant2</a>
+                        <a class="nav-link" href="{% url 'monitor:plant' 2 %}">Plant2</a>
                     </li>
 
                 </ul>
