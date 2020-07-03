@@ -36,11 +36,11 @@ plant2_new = pd.read_csv('.data/plant2_test_split.csv', parse_dates=[0])
 forecast = read_frame(WeatherForecast.objects.all())
 Prediction.objects.all().delete()
 
-for i in tqdm(range(len(plant1_new))):
+for idx in tqdm(range(len(plant1_new))):
     start_time = time.time()
     # 새로 들어온 데이터
-    new1 = plant1_new.iloc[i, :]
-    new2 = plant2_new.iloc[i, :]
+    new1 = plant1_new.iloc[idx, :]
+    new2 = plant2_new.iloc[idx, :]
 
     # 새 데이터 db 저장
     col = ['recTime', 'tem_in_loc1', 'hum_in_loc1', 'tem_coil_loc1', 'tem_in_loc2', 
@@ -291,7 +291,7 @@ for i in tqdm(range(len(plant1_new))):
     # update는 1시간마다 이루어져야 하지만 시뮬레이션을 위해서 2분으로 설정한다.
 
     # test용 break
-    if i == 20 : break
+    if idx == 20 : break
 
     # while start_time - time.time() < 2*60:
     #     continue
