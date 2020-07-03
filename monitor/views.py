@@ -11,16 +11,25 @@ from .models import PlantEnviron, WeatherForecast, Prediction
 @login_required
 def index(request):
     context = {
-        
     }
+
     return render(request, 'monitor/index.html', context)
 
 @login_required
-def plant1(request):
+def plant(request, plant):
     context = {
-
+        'plant':plant,
     }
-    return render(request, 'monitor/plant1.html', context)
+    return render(request, 'monitor/plant.html', context)
+
+
+@login_required
+def loc(request, plant, loc):
+    context = {
+        'plant': plant,
+        'loc': loc,
+    }
+    return render(request, 'monitor/loc.html', context)
 
 
 def visualization(request):
