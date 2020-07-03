@@ -9,26 +9,26 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-md-center" id="navbarTop">
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav nav-pills mr-auto">
                     <li class="nav-item text-nowrap">
-                        <a class="nav-link" href="{% url 'monitor:plant' 1 %}">Plant1</a>
+                        <a class="nav-link {% if plant == 1 %}active{% endif %}" href="{% url 'monitor:plant' 1 %}">Plant1</a>
                     </li>
                     <li class="nav-item text-nowrap">
-                        <a class="nav-link" href="{% url 'monitor:plant' 2 %}">Plant2</a>
+                        <a class="nav-link {% if plant == 2 %}active{% endif %}" href="{% url 'monitor:plant' 2 %}">Plant2</a>
                     </li>
 
-                    {% if plant %}
+
                         <li class="nav-item text-nowrap">
-                            <a class="nav-link" href="{% url 'monitor:loc' plant 1 %}">LOC1</a>
+                            <a class="nav-link {% if plant == 0 %}disabled{% endif %}" href="{% url 'monitor:loc' plant 1 %}">LOC1</a>
                         </li>
                         <li class="nav-item text-nowrap">
-                            <a class="nav-link" href="{% url 'monitor:loc' plant 2 %}">LOC2</a>
+                            <a class="nav-link {% if plant == 0 %}disabled{% endif %}" href="{% url 'monitor:loc' plant 2 %}">LOC2</a>
                         </li>
                         <li class="nav-item text-nowrap">
-                            <a class="nav-link" href="{% url 'monitor:loc' plant 3 %}">LOC3</a>
+                            <a class="nav-link {% if plant == 0 %}disabled{% endif %}" href="{% url 'monitor:loc' plant 3 %}">LOC3</a>
                         </li>
 
-                    {% endif %}
+
 
                 </ul>
             </div>

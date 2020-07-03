@@ -12,6 +12,7 @@ from .models import PlantEnviron, WeatherForecast
 @login_required
 def index(request):
     context = {
+        'plant': 0
     }
 
     return render(request, 'monitor/index.html', context)
@@ -20,7 +21,7 @@ def index(request):
 @login_required
 def plant(request, plant):
     context = {
-        'plant':plant,
+        'plant': plant,
     }
     return render(request, 'monitor/plant.html', context)
 
