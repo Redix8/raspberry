@@ -287,10 +287,6 @@ for i in range(len(plant1_new)):
 
     # update는 1시간마다 이루어져야 하지만 시뮬레이션을 위해서 2분으로 설정한다.
 
-    while time.time() - start_time < 2*60:
-        continue
-    print('Data Updated')
-
     # while start_time - time.time() < 2*60:
     #     continue
     # print('Data Updated')
