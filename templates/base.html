@@ -12,24 +12,30 @@
     <title>Don't Rust</title>
   </head>
   <body>
-<!-- <<<<<<< HEAD
-    <nav class="navbar navbar-dark bg-blue">
-        {% if user.is_authenticated %}
-        <a href="{% url 'accounts:profile_detail' %}">
-            {{ user.username }}
-        </a>
-        
-        <form action="{% url 'accounts:logout' %}" method="POST">
-            {% csrf_token %}
-            <input type="submit" value="로그아웃">
-        </form>
-        
-        {% else %}
-        <a href="{% url 'accounts:login' %}">로그인</a>
-        <a href="{% url 'accounts:signup' %}">관리자 가입</a>
-        {% endif %}
-    
-    </nav> -->
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <div class="container">
+          <a class="navbar-brand" href="#">Don't Rust</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTop" aria-controls="navbarTop" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-md-center" id="navbarTop">
+              <ul class="navbar-nav mr-auto">
+                  <li class="nav-item text-nowrap">
+                      <a class="nav-link" href="{% url 'monitor:plant1' %}">Plant1</a>
+                  </li>
+                  <li class="nav-item text-nowrap">
+                      <a class="nav-link" href="#">Plant2</a>
+                  </li>
+
+              </ul>
+          </div>
+          <form action="{% url 'accounts:logout' %}" method="POST">
+              {% csrf_token %}
+              <button class="btn btn-dark" type="submit">Sign out</button>
+          </form>
+      </div>
+  </nav>
+
     {% block body %}
     {% endblock body %}
 

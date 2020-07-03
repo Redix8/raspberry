@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<!-- 차트 -->
+<span>Environment Chart</span>
+<table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">time</th>
+        <th scope="col">tem_in_loc1</th>
+        <th scope="col">tem_in_loc2</th>
+        <th scope="col">tem_in_loc3</th>
+        <th scope="col">hum_in_loc1</th>
+        <th scope="col">hum_in_loc2</th>
+        <th scope="col">hum_in_loc3</th>
+        <th scope="col">tem_coil_loc1</th>
+        <th scope="col">tem_coil_loc2</th>
+        <th scope="col">tem_coil_loc3</th>
+        <th scope="col">tem_out_loc1</th>
+        <th scope="col">tem_out_loc2</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <th scope="row">{{ plant_envs.rectime }}</th>
+        <td>{{ plant_envs.tem_in_loc1 }}</td>
+        <td>{{ plant_envs.tem_in_loc2 }}</td>
+        <td>{{ plant_envs.tem_in_loc3 }}</td>
+        <td>{{ plant_envs.hum_in_loc1 }}</td>
+        <td>{{ plant_envs.hum_in_loc2 }}</td>
+        <td>{{ plant_envs.hum_in_loc3 }}</td>
+        <td>{{ plant_envs.tem_coil_loc1 }}</td>
+        <td>{{ plant_envs.tem_coil_loc2 }}</td>
+        <td>{{ plant_envs.tem_coil_loc3 }}</td>
+        <td>{{ plant_envs.tem_out_loc1 }}</td>
+        <td>{{ plant_envs.tem_out_loc2 }}</td>
+      </tr>   
+    </tbody>
+  </table>
+ <!-- 결로 차트 -->
+  <table class="table2">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Loc1 결로 유무</th>
+        <th scope="col">Loc2 결로 유무</th>
+        <th scope="col">Loc3 결로 유무</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <th scope="row">{{ plant_envs.pk }}</th>
+        <td>{{ plant_envs.cond_loc1 }}</td>
+        <td>{{ plant_envs.cond_loc1 }}</td>
+        <td>{{ plant_envs.cond_loc1 }}</td>
+      </tr>   
+    </tbody>
+  </table>
+
+<!-- 라인 그래프 -->
+{{ plot_div|safe }}
+<div>
+    {{ x_data }}
+    {{ y_data }}
+</div>
+
+{% endblock %}
+
