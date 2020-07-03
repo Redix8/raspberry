@@ -7,6 +7,10 @@ import time
 from django_pandas.io import read_frame
 import datetime
 from copy import deepcopy
+import warnings
+from tqdm import tqdm
+
+warnings.filterwarnings(action="ignore")
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "raspberry.settings")
 django.setup()
@@ -30,8 +34,9 @@ with open('models/classifiers.bin','rb') as f:
 plant1_new = pd.read_csv('.data/plant1_test_split.csv', parse_dates=[0])
 plant2_new = pd.read_csv('.data/plant2_test_split.csv', parse_dates=[0])
 forecast = read_frame(WeatherForecast.objects.all())
+Prediction.objects.all().delete()
 
-for i in range(len(plant1_new)): 
+for i in tqdm(range(len(plant1_new))):
     start_time = time.time()
     # 새로 들어온 데이터
     new1 = plant1_new.iloc[i, :]
@@ -181,7 +186,6 @@ for i in range(len(plant1_new)):
     for time_label in ['y25', 'y46']:
         X_time = plant1_pred.filter(regex=f'{time_label}')
         for loc_label in ['loc1', 'loc2', 'loc3']:
-            print(f'pred : {loc_label}_{time_label}')
             in_col = X_time.filter(regex=f'(in|coil)_{loc_label}').columns.to_list()
             out_col = X_time.filter(regex=f'out_loc1').columns.to_list()
             date_col = ['month','day', 'hour']
@@ -198,7 +202,6 @@ for i in range(len(plant1_new)):
     for time_label in ['y25', 'y46']:
         X_time = plant2_pred.filter(regex=f'{time_label}')
         for loc_label in ['loc1', 'loc2', 'loc3']:
-            print(f'pred : {loc_label}_{time_label}')
             in_col = X_time.filter(regex=f'(in|coil)_{loc_label}').columns.to_list()
             out_col = X_time.filter(regex=f'out_loc1').columns.to_list()
             date_col = ['month','day', 'hour']
