@@ -16,6 +16,11 @@ td {
   justify-content: center;
   margin-top: 5em;
 }
+.table2base span {
+  font-weight: bold;
+  color: red;
+}
+
 </style>
 {% endblock %}
 
@@ -46,30 +51,30 @@ td {
 </div>
 
  <!-- 결로 차트 -->
-<div class="container-fluid">
+<div class="container">
   <div class='table2base'>
-    <table class="table2 table-bordered">
+    <table class="table table-bordered">
       <thead class="thead-dark">
         <tr>
           <th scope="col">     </th>
-          <th scope="col">24시간</th>
-          <th scope="col">48시간</th>
+          <th scope="col">24시간 이내</th>
+          <th scope="col">48시간 이내</th>
         </tr>
       </thead>
 
       <tbody>
         <tr>
-          <th scope="row">{{ plant_envs.pk }}</th>
+          <th scope="row">결로 여부</th>
           <td>
           {% if plant_envs.cond_loc1 == True %}
-            <span style="color:red;">Y</span>
+            <span>Y</span>
           {% else %}
             N
           {% endif %}
           </td>
           <td>
             {% if plant_envs.cond_loc1 == True %}
-              <span style="color:red;">Y</span>
+              <span>Y</span>
             {% else %}
               N
             {% endif %}
