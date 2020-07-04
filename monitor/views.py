@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from plotly.offline import plot #plotly
@@ -8,6 +8,14 @@ import plotly.graph_objs as go
 from .models import PlantEnviron, WeatherForecast, Prediction
 # Create your views here.
 from fcm_django.models import FCMDevice
+
+from django.core import mail
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.http import HttpResponse
+
+
 
 @login_required
 def index(request):
@@ -119,11 +127,19 @@ def notification(request):
     return render(request, 'monitor/index.html', context)
 
 def sendMail(request):
-    admins = ['받는사람1', '받는사람2']
+    alert_list = [('1','24','1'),('1','24','3'),('2','48','2')]
+    context = {
+        'alert_list' : alert_list,
+    }
+    mail_title = '결로 발생 경보'
+    html_text = render_to_string('monitor/mail.html',context)
+    admins = ['reqip95@gmail.com']
+
     email = EmailMessage(
-        '결로 발생 경보',
-        f'24시간 후 공장 1의 Loc1에서 결로 발생이 예상됩니다.',
+        mail_title,
+        html_text,
         to=admins,
-        fail_silently = False,
     )
-    return email.send()
+    email.content_subtype = 'html'
+    email.send()
+    return HttpResponse('Mail successfully sent')

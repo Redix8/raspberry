@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결로 발생 경보</title>
+    <style>
+        p {
+            font-size: 1.5em;
+            margin-bottom: 1.2em;
+        }
+        a {
+            font-weight: bold;
+            color:crimson;
+        }
+        span {
+            font-weight: bold;
+            color:crimson;
+        }
+    </style>
+</head>
+<body>
+    {% for plant , time , loc in alert_list %}
+    <div>
+        <p>
+            <span>Plant{{ plant }}</span>의 <span>Loc{{loc}}</span>에서 <span>{{time}}시간 후</span> 결로 발생이 예상됩니다.
+            <a href="http://127.0.0.1:8000/monitor/plant/{{ plant }}/loc/{{ loc }}">바로가기</a>  
+        </p>  
+    </div>
+    {% endfor %}
+</body>
+</html>
