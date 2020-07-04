@@ -7,6 +7,7 @@ import plotly.graph_objs as go
 
 from .models import PlantEnviron, WeatherForecast, Prediction
 # Create your views here.
+from fcm_django.models import FCMDevice
 
 @login_required
 def index(request):
@@ -15,6 +16,7 @@ def index(request):
     }
 
     return render(request, 'monitor/index.html', context)
+
 
 @login_required
 def plant(request, plant):
@@ -106,3 +108,13 @@ def visualization(request):
             'y' : y_data,
         }
     return render(request, 'monitor/visualization.html', context)
+
+
+def notification(request):
+    device = FCMDevice.objects.all().first()
+    device.send_message("title", "this is test message")
+    context = {
+
+    }
+
+    return render(request, 'monitor/index.html', context)
