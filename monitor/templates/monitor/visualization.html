@@ -16,7 +16,7 @@ td {
   justify-content: center;
   margin-top: 5em;
 }
-.table2base span {
+.table2base p {
   font-weight: bold;
   color: red;
 }
@@ -67,14 +67,14 @@ td {
           <th scope="row">결로 여부</th>
           <td>
           {% if plant_envs.cond_loc1 == True %}
-            <span>Y</span>
+            <p>Y</p>
           {% else %}
             N
           {% endif %}
           </td>
           <td>
             {% if plant_envs.cond_loc1 == True %}
-              <span>Y</span>
+              <p>Y</p>
             {% else %}
               N
             {% endif %}
