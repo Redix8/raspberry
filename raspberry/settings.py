@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'monitor',
     'accounts',
     'fcm_django',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'raspberry.urls'
@@ -138,4 +141,17 @@ FCM_DJANGO_SETTINGS = {
          # are deleted upon receiving error response from FCM
          # default: False
         "DELETE_INACTIVE_DEVICES": False,
+}
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_WHITELIST= [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
 }

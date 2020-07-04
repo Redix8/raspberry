@@ -15,12 +15,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import url
 from django.shortcuts import redirect
+
+from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet, FCMDeviceViewSet
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'devices', FCMDeviceViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls), #관리자
     path('monitor/', include('monitor.urls')), #메인
     path('accounts/', include('accounts.urls')), #로그인
+
     #path('plotly_django_tutorial/', include('plotly_django_tutorial.urls')),
     path('', lambda r: redirect("monitor:index"), name='root'),
+
+    url(r'^', include(router.urls))
 ]

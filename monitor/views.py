@@ -114,7 +114,7 @@ def notification(request):
     device = FCMDevice.objects.all().first()
     device.send_message("title", "this is test message")
     context = {
-
+        'plant': 0
     }
 
     return render(request, 'monitor/index.html', context)

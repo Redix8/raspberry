@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load staticfiles %}
 {% block body %}
 
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
@@ -41,4 +41,56 @@
 
     {% endblock %}
 
+
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-messaging.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD6U2mC234IYhqRzwbaZWY_da_GMXLeiUc",
+            authDomain: "django-fcm-test-5b82c.firebaseapp.com",
+            databaseURL: "https://django-fcm-test-5b82c.firebaseio.com",
+            projectId: "django-fcm-test-5b82c",
+            storageBucket: "django-fcm-test-5b82c.appspot.com",
+            messagingSenderId: "405299081661",
+            appId: "1:405299081661:web:70371989391aa8249de2d4",
+            measurementId: "G-8PQD6CE540"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        navigator.serviceWorker.register("{% static 'firebase-messaging-sw.js' %}")
+            .then((registration) => {
+                const messaging = firebase.messaging();
+                messaging.useServiceWorker(registration);
+                messaging.getToken().then((currentToken) => {
+                    if (currentToken) {
+                        sendTokenToServer(currentToken)
+                    } else {
+                        // Show permission request.
+                        console.log('No Instance ID token available. Request permission to generate one.');
+
+                    }
+                }).catch((err) => {
+                    console.log('An error occurred while retrieving token. ', err);
+                });
+            })
+
+        function sendTokenToServer(currentToken) {
+            fetch('http://localhost:8000/devices/', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'registration_id': currentToken,
+                    'type': 'web',
+                }),
+                credentials: "include",
+            }).then(function(response) {
+                console.log(response);
+            })
+        }
+    </script>
 {% endblock body %}
