@@ -60,3 +60,4 @@ class Prediction(models.Model):
     cond_loc3     = models.BooleanField()
 
     
+    objects = DataFrameManager()
