@@ -117,3 +117,13 @@ def notification(request):
     }
 
     return render(request, 'monitor/index.html', context)
+
+def sendMail(request):
+    admins = ['받는사람1', '받는사람2']
+    email = EmailMessage(
+        '결로 발생 경보',
+        f'24시간 후 공장 1의 Loc1에서 결로 발생이 예상됩니다.',
+        to=admins,
+        fail_silently = False,
+    )
+    return email.send()
