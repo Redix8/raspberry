@@ -174,6 +174,7 @@ def visualization(request):
             'x' : x_data,
             'y' : y_data,
         }
+    # TODO : visualization.html - > loc.html로 이식해야함
     return render(request, 'monitor/visualization.html', context)
 
 
