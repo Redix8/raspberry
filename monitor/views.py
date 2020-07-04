@@ -1,25 +1,24 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django_pandas.managers import DataFrameManager
+from fcm_django.models import FCMDevice
 
+from .models import PlantEnviron, WeatherForecast, Prediction
+
+import pandas as pd
 from plotly.offline import plot #plotly
 from plotly.graph_objs import *
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
-from django_pandas.managers import DataFrameManager
-import pandas as pd
 
-from .models import PlantEnviron, WeatherForecast, Prediction
-from IPython import embed
-# Create your views here.
-from fcm_django.models import FCMDevice
 
 @login_required
 def index(request):
     context = {
-        'plant': 1
+        'plant': 0
     }
-    return render(request, 'monitor/plant.html', context)
+    return render(request, 'monitor/index.html', context)
 
 
 @login_required
@@ -52,7 +51,7 @@ def loc(request, plant, loc):
     y_data_last_ = y_data_last.filter(regex=filters, axis=1) # loc1? temp_in_loc1, hum_in_loc1, 
     filter2= f'(cond)' + '_loc' + str(loc)
     y_data_cond = y_data_last.filter(regex=filter2, axis=1) 
-    plant_envs = pd.concat([ x_data_last['recTime'], y_data_cond], axis=1)
+    plant_envs = pd.concat([x_data_last['recTime'], y_data_cond], axis=1)
 
     # cnt = len(env) - 1
     # plant_envs = env[cnt]
@@ -98,6 +97,8 @@ def loc(request, plant, loc):
     fig.update_layout(title='<b>Today Factory Environment</b>', xaxis_title='Date', yaxis_title='Scale')
 
     plot_div = plot(fig, output_type='div')
+
+    # TODO : 현재 ~ 24시간까지 결로 여부, 24~48시간 이내 결로 여부
 
     context = {
         'plant': plant,
@@ -184,3 +185,5 @@ def notification(request):
     }
 
     return render(request, 'monitor/index.html', context)
+
+# TODO : 메일 리포팅 구현
