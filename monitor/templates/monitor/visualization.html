@@ -4,9 +4,12 @@
 <style>
 th {
   text-align: center;
+  vertical-align: center;
+  padding: 10em;
 }
 td {
   text-align: center;
+  vertical-align: center;
 }
 .table {
   word-break: break-word;
@@ -17,6 +20,7 @@ td {
   margin-top: 5em;
 }
 .table2base span {
+  font-size: 2em;
   font-weight: bold;
   color: red;
 }
@@ -31,7 +35,7 @@ td {
 
 <div class="container-fluid">
 <table class="table table-bordered">
-    <thead class="thead-light">
+    <thead class="thead-dark">
       <tr>
         <th scope="col">시간</th>
         <th scope="col">온도</th>
@@ -69,7 +73,7 @@ td {
           {% if plant_envs.cond_loc1 == True %}
             <span>Y</span>
           {% else %}
-            N
+            <span>N</span>
           {% endif %}
           </td>
           <td>
