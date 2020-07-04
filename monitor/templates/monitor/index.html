@@ -1,46 +1,43 @@
 {% extends 'base.html' %}
 
 {% block body %}
-
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{% url 'monitor:index' %}">Don't Rust</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTop" aria-controls="navbarTop" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-md-center" id="navbarTop">
-                <ul class="navbar-nav nav-pills mr-auto">
+                <ul class="navbar-nav nav-pills mx-md-3">
                     <li class="nav-item text-nowrap">
                         <a class="nav-link {% if plant == 1 %}active{% endif %}" href="{% url 'monitor:plant' 1 %}">Plant1</a>
                     </li>
                     <li class="nav-item text-nowrap">
                         <a class="nav-link {% if plant == 2 %}active{% endif %}" href="{% url 'monitor:plant' 2 %}">Plant2</a>
                     </li>
-
-
-                    <li class="nav-item text-nowrap">
-                        <a class="nav-link {% if plant == 0 %}disabled{% endif %}" href="{% url 'monitor:loc' plant 1 %}">LOC1</a>
-                    </li>
-                    <li class="nav-item text-nowrap">
-                        <a class="nav-link {% if plant == 0 %}disabled{% endif %}" href="{% url 'monitor:loc' plant 2 %}">LOC2</a>
-                    </li>
-                    <li class="nav-item text-nowrap">
-                        <a class="nav-link {% if plant == 0 %}disabled{% endif %}" href="{% url 'monitor:loc' plant 3 %}">LOC3</a>
-                    </li>
-
-
-
                 </ul>
+                <ul class="navbar-nav nav-pills mx-md-3">
+                    <li class="nav-item text-nowrap">
+                        <a class="nav-link {% if plant == 0 %}disabled{% endif %}{% if loc == 1 %}active{% endif %}" href="{% url 'monitor:loc' plant 1 %}">LOC1</a>
+                    </li>
+                    <li class="nav-item text-nowrap">
+                        <a class="nav-link {% if plant == 0 %}disabled{% endif %}{% if loc == 2 %}active{% endif %}" href="{% url 'monitor:loc' plant 2 %}">LOC2</a>
+                    </li>
+                    <li class="nav-item text-nowrap">
+                        <a class="nav-link {% if plant == 0 %}disabled{% endif %}{% if loc == 3 %}active{% endif %}" href="{% url 'monitor:loc' plant 3 %}">LOC3</a>
+                    </li>
+                </ul>
+                <form class="navbar-nav ml-auto" action="{% url 'accounts:logout' %}" method="POST">
+                    {% csrf_token %}
+                    <button class="btn btn-dark" type="submit">Sign out</button>
+                </form>
             </div>
-            <form action="{% url 'accounts:logout' %}" method="POST">
-                {% csrf_token %}
-                <button class="btn btn-dark" type="submit">Sign out</button>
-            </form>
+
         </div>
     </nav>
 
-    {% block plant %}
+{% block plant %}
 
-    {% endblock %}
+{% endblock %}
 
-{% endblock body %}
+{% endblock %}
