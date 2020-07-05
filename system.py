@@ -58,7 +58,7 @@ for idx in tqdm(range(len(plant1_new))):
     new2.recTime = pd.to_datetime(new2.recTime)
 
     df2 = pd.DataFrame(columns=col)
-    df2 = df2.append(new1)
+    df2 = df2.append(new2)
     df2.index = df2.recTime
     df2['plant'] = '2'
 
