@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django_pandas.managers import DataFrameManager
 from fcm_django.models import FCMDevice
 from django.db.models import F
+from django.http import HttpResponseRedirect
 
 
 from .models import PlantEnviron, WeatherForecast, Prediction
@@ -230,12 +231,14 @@ def notification(request):
 
     return render(request, 'monitor/index.html', context)
 
+
+@login_required
 def sendMail(request):
     alert_list = [('1','24','1'),('1','24','3'),('2','48','2')]
     context = {
         'alert_list' : alert_list,
     }
-    mail_title = '결로 발생 경보'
+    mail_title = f'Plant{request.GET.get("plant")} 리포트'
     html_text = render_to_string('monitor/mail.html',context)
     admins = ['reqip95@gmail.com']
 
@@ -245,5 +248,5 @@ def sendMail(request):
         to=admins,
     )
     email.content_subtype = 'html'
-    email.send()
-    return HttpResponse('Mail successfully sent')
+    # email.send()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
