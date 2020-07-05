@@ -39,12 +39,21 @@ def plant(request, plant):
     env = PlantEnviron.objects.order_by(F('recTime').desc()).filter(plant=plant).first()
     pred24 = Prediction.objects.order_by(F('recTime').desc()).filter(plant=plant).filter(forecast='24')[:24]
     pred48 = Prediction.objects.order_by(F('recTime').desc()).filter(plant=plant).filter(forecast='48')[:24]
+    cond24 = pred24.to_dataframe()
+    cond24 = cond24.filter(regex='cond').apply(lambda x: any(x))
+    cond48 = pred48.to_dataframe()
+    cond48 = cond48.filter(regex='cond').apply(lambda x: any(x))
+
     context = {
         'plant': plant,
         'env': env,
         'pred24': pred24,
         'pred48': pred48,
+        'cond24': cond24,
+        'cond48': cond48,
     }
+
+
     return render(request, 'monitor/plant.html', context)
 
 
