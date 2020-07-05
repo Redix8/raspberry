@@ -1,25 +1,43 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django_pandas.managers import DataFrameManager
+from fcm_django.models import FCMDevice
+from django.db.models import F
 
+
+from .models import PlantEnviron, WeatherForecast, Prediction
+
+import re
+import pandas as pd
+from datetime import timedelta
 from plotly.offline import plot #plotly
 from plotly.graph_objs import *
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
-from django_pandas.managers import DataFrameManager
-import pandas as pd
 
+<<<<<<< HEAD
 from .models import PlantEnviron, WeatherForecast, Prediction
 # from IPython import embed
 # Create your views here.
 from fcm_django.models import FCMDevice
+=======
+
+from django.core import mail
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.http import HttpResponse
+
+
+>>>>>>> 3e5c1d31822fc1fbc49d0bde081f3a2d2bb620fd
 
 @login_required
 def index(request):
     context = {
-        'plant': 1
+        'plant': 0
     }
-    return render(request, 'monitor/plant.html', context)
+    return render(request, 'monitor/index.html', context)
 
 
 @login_required
@@ -34,78 +52,53 @@ def plant(request, plant):
 def loc(request, plant, loc):
 
     # 현재 공장 환경 (차트)
-    # plant_all = PlantEnviron.objects.all().filter(plant=plant)
     # 공장 환경 : 현재 값-24시간 + 현재 기준으로 24, 48예측 값 (plotly)
-    env = PlantEnviron.objects.all().filter(plant=plant)
-    env_df = env.to_dataframe()
-    #(마지막 line그래프에서 써야함)   
-    y_data = env_df.iloc[-24:, 1:]
-    x_data = env_df.iloc[-24:, 1] #시간
+    env = PlantEnviron.objects.order_by(F('recTime').desc()).filter(plant=plant)[:24]
+    pred24 = Prediction.objects.order_by(F('recTime').desc()).filter(plant=plant).filter(forecast='24')[:24]
+    pred48 = Prediction.objects.order_by(F('recTime').desc()).filter(plant=plant).filter(forecast='48')[:24]
 
-    #현재 온,습,코 관측값
-    y_data_last = env_df.iloc[-1:, 1:] 
-    x_data_last = env_df.iloc[-1:, 1] #시간
-    print(x_data_last)
-   
-    #loc 선택
-    filters= f'(tem|hum)' + '_(in|coil)' + '_loc' + str(loc)
-    y_data_last_ = y_data_last.filter(regex=filters, axis=1) # loc1? temp_in_loc1, hum_in_loc1, 
-    filter2= f'(cond)' + '_loc' + str(loc)
-    y_data_cond = y_data_last.filter(regex=filter2, axis=1) 
-    plant_envs = pd.concat([ x_data_last['recTime'], y_data_cond], axis=1)
+    env_df = env.to_dataframe().sort_values(by=['recTime'])
+    pred24_df = pred24.to_dataframe().sort_values(by=['recTime'])
+    pred24_df['recTime'] = pred24_df['recTime'] + pd.offsets.Hour(24)
+    pred48_df = pred48.to_dataframe().sort_values(by=['recTime'])
+    pred48_df['recTime'] = pred48_df['recTime'] + pd.offsets.Hour(48)
 
-    # cnt = len(env) - 1
-    # plant_envs = env[cnt]
-    # print(plant_envs)
-    # plant_envs = env_df.filter(regex=filters, axis=1)
+    #(마지막 line그래프에서 써야함)
 
-    #24, 48시간 예측값
-    pred = Prediction.objects.all().to_dataframe()
-    # print(pred)
-    pred = pred.iloc[-48:,:] # 현재 관측값 기준 -24Hours
-    # embed()
-    if (pred['forecast'] == '24').bool:
-        pred_24_ = pred[pred['forecast'] == '24'] #24시간후 예측값 df
-        pred_24 = pred_24_.filter(regex=filters, axis=1)
-        pred_24 = pd.concat([pred_24_['recTime'], pred_24], axis=1)
-        pred_24 = pred_24.set_index('recTime')
+    # #loc 선택
+    filters = f'((in|coil|cond)_loc{loc}|out|recTime)'
+    env_df = env_df.filter(regex=filters)
+    pred24_df = pred24_df.filter(regex=filters)
+    pred48_df = pred48_df.filter(regex=filters)
+    env_df.columns = [re.sub('\d', '', col) for col in env_df.columns]
+    pred24_df.columns = [re.sub('\d', '', col) for col in pred24_df.columns]
+    pred48_df.columns = [re.sub('\d', '', col) for col in pred48_df.columns]
 
-    
-    elif (pred['forecast'] == '48').bool:
-        pred_48_ = pred[pred['forecast'] == '48'] #48시간후 예측값 df
-        pred_48 = pred_48_.filter(regex=filters, axis=1)
-        pred_48 = pd.concat([pred_48_['recTime'], pred_48], axis=1)
-        pred_48 = pred_48.set_index('recTime')
-
-
-    index_24 = pd.date_range(start=pred_24.index[-1], periods=24, freq='1H')
-    # index_48 = pd.date_range(start=pred_48.index[-1], periods=48, freq='1H')
-
-    plant_24 = pd.DataFrame({'recTime':index_24[24:]}).join(pred_24)
-    # plant_48 = pd.DataFrame({'index':index_48}).join(pred_48)
-
-    #시각화
+    # #시각화
     fig = go.Figure()
 
-    fig.add_trace(go.Scatter(x=x_data.index, y=y_data.iloc[:,0], mode='lines+markers', name='온도',
+    fig.add_trace(go.Scatter(x=env_df['recTime'], y=env_df['tem_in_loc'], mode='lines+markers', name='온도',
                              opacity=0.8, marker_color='red'))
 
-    fig.add_trace(go.Scatter(x=plant_24.index, y=plant_24.iloc[:,0], mode='lines+markers', name='24시간후 온도',
+    fig.add_trace(go.Scatter(x=pred24_df['recTime'], y=pred24_df['tem_in_loc'], mode='lines+markers', name='24시간후 온도',
                              opacity=0.8, marker_color='green'))
 
-    # fig.add_trace(go.Scatter(x=plant_48.index, y=plant_48.iloc[:,0], mode='lines+markers', name='48시간후 온도',
-    #                          opacity=0.8, marker_color='orange'))
+    fig.add_trace(go.Scatter(x=pred48_df['recTime'], y=pred48_df['tem_in_loc'], mode='lines+markers', name='48시간후 온도',
+                             opacity=0.8, marker_color='orange'))
+
     fig.update_layout(title='<b>Today Factory Environment</b>', xaxis_title='Date', yaxis_title='Scale')
 
     plot_div = plot(fig, output_type='div')
 
+    # TODO : 현재 ~ 24시간까지 결로 여부, 24~48시간 이내 결로 여부
+
     context = {
         'plant': plant,
         'loc': loc,
-        'plant_envs': plant_envs, #환경 CHART
+        'plant_envs': env_df.iloc[-1], #환경 CHART
         'plot_div': plot_div,
-        'x': x_data,
-        'y': y_data,
+        # 'x': x_data,
+        # 'y': y_data,
     }
     return render(request, 'monitor/loc.html', context)
 
@@ -173,6 +166,7 @@ def visualization(request):
             'x' : x_data,
             'y' : y_data,
         }
+
     return render(request, 'monitor/visualization.html', context)
 
 
@@ -184,3 +178,21 @@ def notification(request):
     }
 
     return render(request, 'monitor/index.html', context)
+
+def sendMail(request):
+    alert_list = [('1','24','1'),('1','24','3'),('2','48','2')]
+    context = {
+        'alert_list' : alert_list,
+    }
+    mail_title = '결로 발생 경보'
+    html_text = render_to_string('monitor/mail.html',context)
+    admins = ['reqip95@gmail.com']
+
+    email = EmailMessage(
+        mail_title,
+        html_text,
+        to=admins,
+    )
+    email.content_subtype = 'html'
+    email.send()
+    return HttpResponse('Mail successfully sent')
