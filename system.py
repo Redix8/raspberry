@@ -291,7 +291,7 @@ for idx in tqdm(range(len(plant1_new))):
     # update는 1시간마다 이루어져야 하지만 시뮬레이션을 위해서 2분으로 설정한다.
 
     # test용 break
-    if idx == 20 : break
+    if idx == 30 : break
 
     # while start_time - time.time() < 2*60:
     #     continue
