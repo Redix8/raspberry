@@ -29,7 +29,7 @@
 <div class="container">
   <div class='table2base'>
     <table class="table table-bordered">
-      <thead class="thead-dark">
+      <thead class="thead-light">
         <tr>
           <th scope="col">     </th>
           <th scope="col">24시간 이내</th>
@@ -40,8 +40,8 @@
       <tbody>
         <tr>
           <th scope="row">결로 여부</th>
-          <td>{{ pred24.cond_loc|yesno:"YES, NO, ERR" }}</td>
-          <td>{{ pred48.cond_loc|yesno:"YES, NO, ERR" }}</td>
+          <td class="{{ pred24.cond_loc|yesno:"table-danger,," }}">{{ pred24.cond_loc|yesno:"YES, NO, ERR" }}</td>
+          <td class="{{ pred48.cond_loc|yesno:"table-danger,," }}">{{ pred48.cond_loc|yesno:"YES, NO, ERR" }}</td>
         </tr>
       </tbody>
     </table>
