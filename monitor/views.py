@@ -10,7 +10,7 @@ from django_pandas.managers import DataFrameManager
 import pandas as pd
 
 from .models import PlantEnviron, WeatherForecast, Prediction
-from IPython import embed
+# from IPython import embed
 # Create your views here.
 from fcm_django.models import FCMDevice
 
