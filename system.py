@@ -14,7 +14,7 @@ warnings.filterwarnings(action="ignore")
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "raspberry.settings")
 django.setup()
-
+from fcm_django.models import FCMDevice
 from monitor.models import PlantEnviron, WeatherForecast, Prediction
 
 def dewpoint(temp, humid):
@@ -288,13 +288,17 @@ for idx in tqdm(range(len(plant1_new))):
     Prediction(**vals) for vals in plant2_save_48.to_dict('records')
     )
 
-    # update는 1시간마다 이루어져야 하지만 시뮬레이션을 위해서 2분으로 설정한다.
+    # update는 1시간마다 이루어져야 하지만 시뮬레이션을 위해서 임의 시간으로 설정한다.
 
     # test용 break
-    if idx == 30 : break
+    if idx > 30:
+        devices = FCMDevice.objects.all()
+        devices.send_message("update", "prediction updated")
 
-    # while start_time - time.time() < 2*60:
-    #     continue
+        while time.time() - start_time < 30:  # 30초
+            continue
+        if idx > 60:
+            break
     # print('Data Updated')
 
 
