@@ -35,8 +35,14 @@ def index(request):
 
 @login_required
 def plant(request, plant):
+    env = PlantEnviron.objects.order_by(F('recTime').desc()).filter(plant=plant).first()
+    pred24 = Prediction.objects.order_by(F('recTime').desc()).filter(plant=plant).filter(forecast='24')[:24]
+    pred48 = Prediction.objects.order_by(F('recTime').desc()).filter(plant=plant).filter(forecast='48')[:24]
     context = {
         'plant': plant,
+        'env': env,
+        'pred24': pred24,
+        'pred48': pred48,
     }
     return render(request, 'monitor/plant.html', context)
 
