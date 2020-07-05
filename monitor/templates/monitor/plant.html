@@ -1,83 +1,163 @@
 {% extends 'monitor/index.html' %}
 
 {% block plant %}
-    <h1>plant{{plant}}</h1>
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
-        <div class="sidebar-sticky pt-3">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">
-                        <span data-feather="home"></span>
-                        Dashboard <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span data-feather="file"></span>
-                        Orders
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span data-feather="shopping-cart"></span>
-                        Products
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span data-feather="users"></span>
-                        Customers
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span data-feather="bar-chart-2"></span>
-                        Reports
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span data-feather="layers"></span>
-                        Integrations
-                    </a>
-                </li>
-            </ul>
 
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                <span>Saved reports</span>
-                <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                    <span data-feather="plus-circle"></span>
-                </a>
-            </h6>
-            <ul class="nav flex-column mb-2">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span data-feather="file-text"></span>
-                        Current month
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span data-feather="file-text"></span>
-                        Last quarter
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span data-feather="file-text"></span>
-                        Social engagement
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span data-feather="file-text"></span>
-                        Year-end sale
-                    </a>
-                </li>
-            </ul>
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="sidebar-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">
+                                <span data-feather="home"></span>
+                                Dashboard <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file"></span>
+                                Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="shopping-cart"></span>
+                                Products
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="users"></span>
+                                Customers
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="bar-chart-2"></span>
+                                Reports
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="layers"></span>
+                                Integrations
+                            </a>
+                        </li>
+                    </ul>
+
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>Saved reports</span>
+                        <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+                            <span data-feather="plus-circle"></span>
+                        </a>
+                    </h6>
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                Current month
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                Last quarter
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                Social engagement
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                Year-end sale
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <table class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th scope="col">Location</th>
+                            <th scope="col">현재 결로상태</th>
+                            <th scope="col">24시간 결로여부</th>
+                            <th scope="col">48시간 결로여부</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">LOC1</th>
+                            <td>{{ env.cond_loc1|yesno:"YES, NO, ERR" }}</td>
+                            <td>{{ env.hum_in_loc1|floatformat:2 }}</td>
+                            <td>{{ env.tem_coil_loc1|floatformat:2 }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">LOC2</th>
+                            <td>{{ env.cond_loc2|yesno:"YES, NO, ERR" }}</td>
+                            <td>{{ env.hum_in_loc2|floatformat:2 }}</td>
+                            <td>{{ env.tem_coil_loc2|floatformat:2 }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">LOC3</th>
+                            <td>{{ env.cond_loc3|yesno:"YES, NO, ERR" }}</td>
+                            <td>{{ env.hum_in_loc3|floatformat:2 }}</td>
+                            <td>{{ env.tem_coil_loc3|floatformat:2 }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th scope="col">Location</th>
+                            <th scope="col">온도</th>
+                            <th scope="col">습도</th>
+                            <th scope="col">코일온도</th>
+                            <th scope="col">외부온도</th>
+                            <th scope="col">외부습도</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">LOC1</th>
+                            <td>{{ env.tem_in_loc1|floatformat:2 }}</td>
+                            <td>{{ env.hum_in_loc1|floatformat:2 }}</td>
+                            <td>{{ env.tem_coil_loc1|floatformat:2 }}</td>
+                            <td>{{ env.tem_out_loc1|floatformat:2 }}</td>
+                            <td>{{ env.hum_out_loc1|floatformat:2 }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">LOC2</th>
+                            <td>{{ env.tem_in_loc2|floatformat:2 }}</td>
+                            <td>{{ env.hum_in_loc2|floatformat:2 }}</td>
+                            <td>{{ env.tem_coil_loc2|floatformat:2 }}</td>
+                            <td>{{ env.tem_out_loc1|floatformat:2 }}</td>
+                            <td>{{ env.hum_out_loc1|floatformat:2 }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">LOC3</th>
+                            <td>{{ env.tem_in_loc3|floatformat:2 }}</td>
+                            <td>{{ env.hum_in_loc3|floatformat:2 }}</td>
+                            <td>{{ env.tem_coil_loc3|floatformat:2 }}</td>
+                            <td>{{ env.tem_out_loc1|floatformat:2 }}</td>
+                            <td>{{ env.hum_out_loc1|floatformat:2 }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
         </div>
-    </nav>
-
+    </div>
 
 {% endblock %}
+
+
 
