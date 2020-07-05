@@ -86,7 +86,7 @@
                 </div>
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
                     <table class="table table-bordered text-center">
-                        <thead>
+                        <thead class="thead-light">
                         <tr>
                             <th scope="col">Location</th>
                             <th scope="col">현재 결로상태</th>
@@ -97,21 +97,21 @@
                         <tbody>
                         <tr>
                             <th scope="row">LOC1</th>
-                            <td>{{ env.cond_loc1|yesno:"YES, NO, ERR" }}</td>
-                            <td>{{ cond24.cond_loc1|yesno:"YES, NO, ERR" }}</td>
-                            <td>{{ cond48.cond_loc1|yesno:"YES, NO, ERR" }}</td>
+                            <td class="{{ env.cond_loc1|yesno:"table-danger,," }}">{{ env.cond_loc1|yesno:"YES, NO, ERR" }}</td>
+                            <td class="{{ cond24.cond_loc1|yesno:"table-danger,," }}">{{ cond24.cond_loc1|yesno:"YES, NO, ERR" }}</td>
+                            <td class="{{ cond48.cond_loc1|yesno:"table-danger,," }}">{{ cond48.cond_loc1|yesno:"YES, NO, ERR" }}</td>
                         </tr>
                         <tr>
                             <th scope="row">LOC2</th>
-                            <td>{{ env.cond_loc2|yesno:"YES, NO, ERR" }}</td>
-                            <td>{{ cond24.cond_loc2|yesno:"YES, NO, ERR" }}</td>
-                            <td>{{ cond48.cond_loc2|yesno:"YES, NO, ERR" }}</td>
+                            <td class="{{ env.cond_loc2|yesno:"table-danger,," }}">{{ env.cond_loc2|yesno:"YES, NO, ERR" }}</td>
+                            <td class="{{ cond24.cond_loc2|yesno:"table-danger,," }}">{{ cond24.cond_loc2|yesno:"YES, NO, ERR" }}</td>
+                            <td class="{{ cond48.cond_loc2|yesno:"table-danger,," }}">{{ cond48.cond_loc2|yesno:"YES, NO, ERR" }}</td>
                         </tr>
                         <tr>
                             <th scope="row">LOC3</th>
-                            <td>{{ env.cond_loc3|yesno:"YES, NO, ERR" }}</td>
-                            <td>{{ cond24.cond_loc3|yesno:"YES, NO, ERR" }}</td>
-                            <td>{{ cond48.cond_loc3|yesno:"YES, NO, ERR" }}</td>
+                            <td class="{{ env.cond_loc3|yesno:"table-danger,," }}">{{ env.cond_loc3|yesno:"YES, NO, ERR" }}</td>
+                            <td class="{{ cond24.cond_loc3|yesno:"table-danger,," }}">{{ cond24.cond_loc3|yesno:"YES, NO, ERR" }}</td>
+                            <td class="{{ cond48.cond_loc3|yesno:"table-danger,," }}">{{ cond48.cond_loc3|yesno:"YES, NO, ERR" }}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -119,7 +119,7 @@
                 </div>
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <table class="table table-bordered text-center">
-                        <thead>
+                        <thead class="thead-light">
                         <tr>
                             <th scope="col">Location</th>
                             <th scope="col">온도</th>
