@@ -68,11 +68,11 @@ def loc(request, plant, loc):
     pred48_df.columns = [re.sub('\d', '', col) for col in pred48_df.columns]
 
     #이슬점
-    def dewpoint(temp, humid):
-    return ((243.12 *((17.62 * temp /(243.12 + temp)) + np.log(humid / 100.0))) 
-            / (17.62-((17.62 * temp / (243.12 + temp)) + np.log(humid/ 100.0))))
+    # def dewpoint(temp, humid):
+    # return ((243.12 *((17.62 * temp /(243.12 + temp)) + np.log(humid / 100.0))) 
+    #         / (17.62-((17.62 * temp / (243.12 + temp)) + np.log(humid/ 100.0))))
 
-    env_df = dewpoint(env_df['tem_in_loc'], env_df['hum_in_loc'])
+    # env_df = dewpoint(env_df['tem_in_loc'], env_df['hum_in_loc'])
 
     # #시각화
     fig = go.Figure()
