@@ -137,6 +137,8 @@ def loc(request, plant, loc):
         'loc': loc,
         'plant_envs': env_df.iloc[-1], #환경 CHART
         'plot_div': plot_div,
+        'pred24': pred24_df.iloc[-1],
+        'pred48': pred48_df.iloc[-1],
         # 'x': x_data,
         # 'y': y_data,
     }

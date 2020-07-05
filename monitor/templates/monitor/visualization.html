@@ -68,20 +68,8 @@ td {
       <tbody>
         <tr>
           <th scope="row">결로 여부</th>
-          <td>
-          {% if plant_envs.cond_loc1 == True %}
-            <p>Y</p>
-          {% else %}
-            N
-          {% endif %}
-          </td>
-          <td>
-            {% if plant_envs.cond_loc1 == True %}
-              <p>Y</p>
-            {% else %}
-              N
-            {% endif %}
-            </td>
+          <td>{{ pred24.cond_loc|yesno:"YES, NO, ERR" }}</td>
+          <td>{{ pred48.cond_loc|yesno:"YES, NO, ERR" }}</td>
         </tr>   
       </tbody>
     </table>
