@@ -111,16 +111,16 @@ def loc(request, plant, loc):
     fig.add_trace(go.Scatter(x=env_df['recTime'], y=env_df['tem_coil_loc'], mode='lines+markers',  name='코일온도',
                              opacity=0.8, marker_color='rgb(245,73,19)'), secondary_y = False)
     fig.add_trace(go.Scatter(x=pred24_df['recTime'], y=pred24_df['tem_coil_loc'], mode='lines+markers', name='24시간후 코일온도',
-                             opacity=0.8, marker_color='rgb(245,73,19)'), secondary_y = False)
+                             opacity=0.8, line = dict(color='rgb(245,73,19)', width=3, dash='dash')), secondary_y = False)
     fig.add_trace(go.Scatter(x=pred48_df['recTime'], y=pred48_df['tem_coil_loc'], mode='lines+markers', name='48시간후 코일온도',
-                             opacity=0.8, marker_color='rgb(245,73,19)'), secondary_y = False)
+                             opacity=0.8, line = dict(color='rgb(245,73,19)', width=3, dash='dot')), secondary_y = False)
 
     fig.add_trace(go.Scatter(x=env_df['recTime'], y=env_df['tem_dewpoint_in_loc'], mode='lines+markers',  name='이슬점',
-                             opacity=0.8, marker_color='darkgreen'), secondary_y = False)
+                             opacity=0.8, marker_color='rgb(48,85,152)'), secondary_y = False)
     fig.add_trace(go.Scatter(x=pred24_df['recTime'], y=pred24_df['tem_dewpoint_in_loc'], mode='lines+markers', name='24시간후 이슬점',
-                             opacity=0.8, marker_color='darkgreen'), secondary_y = False)
+                             opacity=0.8,  line = dict(color='rgb(48,85,152)', width=3, dash='dash')), secondary_y = False)
     fig.add_trace(go.Scatter(x=pred48_df['recTime'], y=pred48_df['tem_dewpoint_in_loc'], mode='lines+markers', name='48시간후 이슬점',
-                             opacity=0.8, marker_color='darkgreen'), secondary_y = False)
+                             opacity=0.8, line = dict(color='rgb(48,85,152)', width=3, dash='dot')), secondary_y = False)
 
     fig.add_trace(go.Bar(x=env_df['recTime'], y=env_df['hum_in_loc'],  name='습도',
                              opacity=0.8, marker_color='skyblue'), secondary_y = True)
