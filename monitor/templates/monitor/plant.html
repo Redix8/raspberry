@@ -51,7 +51,7 @@
                     </h6>
                     <ul class="nav flex-column mb-2">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'monitor:sendmail' %}?plant={{ plant }}">
+                            <a class="nav-link" href="{% url 'monitor:sendmail' plant %}?plant={{ plant }}">
                                 <span data-feather="file-text"></span>
                                 Current month
                             </a>
@@ -155,7 +155,6 @@
                         </tbody>
                     </table>
                 </div>
-                <a href="{% url 'monitor:sendmail' plant %}">알림 메일 보내기</a>
             </main>
         </div>
     </div>

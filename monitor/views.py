@@ -231,7 +231,7 @@ def notification(request):
 
     return render(request, 'monitor/index.html', context)
 
-<<<<<<< HEAD
+@login_required
 def sendMail(request, plant):
     env = PlantEnviron.objects.order_by(F('recTime').desc()).filter(plant=plant).first()
     pred24 = Prediction.objects.order_by(F('recTime').desc()).filter(plant=plant).filter(forecast='24')[:24]
@@ -241,12 +241,6 @@ def sendMail(request, plant):
     cond48 = pred48.to_dataframe()
     cond48 = cond48.filter(regex='cond').apply(lambda x: any(x))
 
-=======
-
-@login_required
-def sendMail(request):
-    alert_list = [('1','24','1'),('1','24','3'),('2','48','2')]
->>>>>>> master
     context = {
         'plant' : plant,
         'env': env,
@@ -255,12 +249,9 @@ def sendMail(request):
         'cond24': cond24,
         'cond48': cond48,
     }
-<<<<<<< HEAD
 
-    mail_title = '결로 발생 경보'
-=======
-    mail_title = f'Plant{request.GET.get("plant")} 리포트'
->>>>>>> master
+    mail_title = f'Plant{plant} 리포트'
+
     html_text = render_to_string('monitor/mail.html',context)
     admins = ['reqip95@gmail.com']
 
@@ -270,5 +261,5 @@ def sendMail(request):
         to=admins,
     )
     email.content_subtype = 'html'
-    # email.send()
+    email.send()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
