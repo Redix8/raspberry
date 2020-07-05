@@ -9,6 +9,7 @@ from .models import PlantEnviron, WeatherForecast, Prediction
 
 import re
 import pandas as pd
+import numpy as np
 from datetime import timedelta
 from plotly.offline import plot #plotly
 from plotly.graph_objs import *
@@ -68,35 +69,56 @@ def loc(request, plant, loc):
     pred48_df.columns = [re.sub('\d', '', col) for col in pred48_df.columns]
 
     #이슬점
-    # def dewpoint(temp, humid):
-    # return ((243.12 *((17.62 * temp /(243.12 + temp)) + np.log(humid / 100.0))) 
-    #         / (17.62-((17.62 * temp / (243.12 + temp)) + np.log(humid/ 100.0))))
+    def dewpoint(temp, humid):
+        return ((243.12 *((17.62 * temp /(243.12 + temp)) + np.log(humid / 100.0))) 
+            / (17.62-((17.62 * temp / (243.12 + temp)) + np.log(humid/ 100.0))))
 
-    # env_df = dewpoint(env_df['tem_in_loc'], env_df['hum_in_loc'])
+    tem_col = env_df.filter(regex='tem_in_').columns
+    hum_col = env_df.filter(regex='hum_in_').columns
+
+    dew_col = f'{tem_col[0][:3]}_dewpoint_{tem_col[0][-6:]}'
+    print(dew_col)
+    env_df[dew_col] = dewpoint(env_df[tem_col[0]], env_df[hum_col[0]])
+    pred24_df[dew_col] = dewpoint(pred24_df[tem_col[0]], pred24_df[hum_col[0]])
+    pred48_df[dew_col] = dewpoint(pred48_df[tem_col[0]], pred48_df[hum_col[0]])
 
     # #시각화
-    fig = go.Figure()
+    #이중축있는 subplot
+    fig = make_subplots(specs=[[{"secondary_y": True}]])    
 
-    fig.add_trace(go.Scatter(x=env_df['recTime'], y=env_df['tem_in_loc'], mode='lines+markers', name='온도',
-                             opacity=0.8, marker_color='red'))
+    fig.add_trace(go.Scatter(x=env_df['recTime'], y=env_df['tem_in_loc'],  mode='lines+markers', name='온도',
+                             opacity=0.8, marker_color='red'), secondary_y = False)
 
     fig.add_trace(go.Scatter(x=pred24_df['recTime'], y=pred24_df['tem_in_loc'], mode='lines+markers', name='24시간후 온도',
-                             opacity=0.8, marker_color='darkred'))
+                             opacity=0.8, marker_color='red'), secondary_y = False)
 
     fig.add_trace(go.Scatter(x=pred48_df['recTime'], y=pred48_df['tem_in_loc'], mode='lines+markers', name='48시간후 온도',
-                             opacity=0.8, marker_color='darkred'))
+                             opacity=0.8, marker_color='red'), secondary_y = False)
 
-    fig.add_trace(go.Scatter(x=env_df['recTime'], y=env_df['hum_in_loc'], mode='lines+markers', name='습도',
-                             opacity=0.8, marker_color='blue'))
+    fig.add_trace(go.Bar(x=env_df['recTime'], y=env_df['hum_in_loc'],  name='습도',
+                             opacity=0.8, marker_color='skyblue'), secondary_y = True)
 
-    fig.add_trace(go.Scatter(x=pred24_df['recTime'], y=pred24_df['hum_in_loc'], mode='lines+markers', name='24시간후 습도',
-                             opacity=0.8, marker_color='darkblue'))
+    fig.add_trace(go.Bar(x=pred24_df['recTime'], y=pred24_df['hum_in_loc'],  name='24시간후 습도',
+                             opacity=0.8, marker_color='skyblue'), secondary_y = True)
 
-    fig.add_trace(go.Scatter(x=pred48_df['recTime'], y=pred48_df['hum_in_loc'], mode='lines+markers', name='48시간후 습도',
-                             opacity=0.8, marker_color='darkblue'))
+    fig.add_trace(go.Bar(x=pred48_df['recTime'], y=pred48_df['hum_in_loc'],  name='48시간후 습도',
+                             opacity=0.8, marker_color='skyblue'), secondary_y = True)
+
+    fig.add_trace(go.Scatter(x=env_df['recTime'], y=env_df['tem_dewpoint_in_loc'], mode='lines+markers',  name='이슬점',
+                             opacity=0.8, marker_color='green'), secondary_y = False)
+
+    fig.add_trace(go.Scatter(x=pred24_df['recTime'], y=pred24_df['tem_dewpoint_in_loc'], mode='lines+markers', name='24시간후 이슬점',
+                             opacity=0.8, marker_color='green'), secondary_y = False)
+
+    fig.add_trace(go.Scatter(x=pred48_df['recTime'], y=pred48_df['tem_dewpoint_in_loc'], mode='lines+markers', name='48시간후 이슬점',
+                             opacity=0.8, marker_color='green'), secondary_y = False)
     
 
-    fig.update_layout(title='<b>Today Factory Environment</b>', xaxis_title='Date', yaxis_title='Scale')
+    fig.update_layout(title='<b>Today Factory Environment</b>',barmode='overlay')
+
+    fig.update_xaxes(title_text='<b>날짜</b>')
+    fig.update_yaxes(title_text='<b>ºC</b>')
+    fig.update_yaxes(title_text='<b>%</b>', secondary_y=True)
 
     plot_div = plot(fig, output_type='div')
 
