@@ -81,8 +81,11 @@
             </nav>
 
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <table class="table table-bordered text-center">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 h2 text-center">
+                    {{ env.recTime|date:'시간 : Y.m.d. H:00' }}
+                </div>
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+                    <table class="table table-bordered text-center">
                         <thead>
                         <tr>
                             <th scope="col">Location</th>
@@ -95,23 +98,24 @@
                         <tr>
                             <th scope="row">LOC1</th>
                             <td>{{ env.cond_loc1|yesno:"YES, NO, ERR" }}</td>
-                            <td>{{ env.hum_in_loc1|floatformat:2 }}</td>
-                            <td>{{ env.tem_coil_loc1|floatformat:2 }}</td>
+                            <td>{{ cond24.cond_loc1|yesno:"YES, NO, ERR" }}</td>
+                            <td>{{ cond48.cond_loc1|yesno:"YES, NO, ERR" }}</td>
                         </tr>
                         <tr>
                             <th scope="row">LOC2</th>
                             <td>{{ env.cond_loc2|yesno:"YES, NO, ERR" }}</td>
-                            <td>{{ env.hum_in_loc2|floatformat:2 }}</td>
-                            <td>{{ env.tem_coil_loc2|floatformat:2 }}</td>
+                            <td>{{ cond24.cond_loc2|yesno:"YES, NO, ERR" }}</td>
+                            <td>{{ cond48.cond_loc2|yesno:"YES, NO, ERR" }}</td>
                         </tr>
                         <tr>
                             <th scope="row">LOC3</th>
                             <td>{{ env.cond_loc3|yesno:"YES, NO, ERR" }}</td>
-                            <td>{{ env.hum_in_loc3|floatformat:2 }}</td>
-                            <td>{{ env.tem_coil_loc3|floatformat:2 }}</td>
+                            <td>{{ cond24.cond_loc3|yesno:"YES, NO, ERR" }}</td>
+                            <td>{{ cond48.cond_loc3|yesno:"YES, NO, ERR" }}</td>
                         </tr>
                         </tbody>
                     </table>
+
                 </div>
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <table class="table table-bordered text-center">
