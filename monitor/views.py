@@ -230,11 +230,24 @@ def notification(request):
 
     return render(request, 'monitor/index.html', context)
 
-def sendMail(request):
-    alert_list = [('1','24','1'),('1','24','3'),('2','48','2')]
+def sendMail(request, plant):
+    env = PlantEnviron.objects.order_by(F('recTime').desc()).filter(plant=plant).first()
+    pred24 = Prediction.objects.order_by(F('recTime').desc()).filter(plant=plant).filter(forecast='24')[:24]
+    pred48 = Prediction.objects.order_by(F('recTime').desc()).filter(plant=plant).filter(forecast='48')[:24]
+    cond24 = pred24.to_dataframe()
+    cond24 = cond24.filter(regex='cond').apply(lambda x: any(x))
+    cond48 = pred48.to_dataframe()
+    cond48 = cond48.filter(regex='cond').apply(lambda x: any(x))
+
     context = {
-        'alert_list' : alert_list,
+        'plant' : plant,
+        'env': env,
+        'pred24': pred24,
+        'pred48': pred48,
+        'cond24': cond24,
+        'cond48': cond48,
     }
+
     mail_title = '결로 발생 경보'
     html_text = render_to_string('monitor/mail.html',context)
     admins = ['reqip95@gmail.com']
