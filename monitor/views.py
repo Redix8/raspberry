@@ -94,37 +94,39 @@ def loc(request, plant, loc):
 
     fig.add_trace(go.Scatter(x=env_df['recTime'], y=env_df['tem_in_loc'],  mode='lines+markers', name='온도',
                              opacity=0.8, marker_color='red'), secondary_y = False)
-
     fig.add_trace(go.Scatter(x=pred24_df['recTime'], y=pred24_df['tem_in_loc'], mode='lines+markers', name='24시간후 온도',
-                             opacity=0.8, marker_color='red'), secondary_y = False)
-
+                             opacity=0.8, line = dict(color='red', width=3, dash='dash')), secondary_y = False)
     fig.add_trace(go.Scatter(x=pred48_df['recTime'], y=pred48_df['tem_in_loc'], mode='lines+markers', name='48시간후 온도',
-                             opacity=0.8, marker_color='red'), secondary_y = False)
+                             opacity=0.8,line = dict(color='red', width=3, dash='dot')), secondary_y = False)
+
+    fig.add_trace(go.Scatter(x=env_df['recTime'], y=env_df['tem_coil_loc'], mode='lines+markers',  name='코일온도',
+                             opacity=0.8, marker_color='rgb(245,73,19)'), secondary_y = False)
+    fig.add_trace(go.Scatter(x=pred24_df['recTime'], y=pred24_df['tem_coil_loc'], mode='lines+markers', name='24시간후 코일온도',
+                             opacity=0.8, marker_color='rgb(245,73,19)'), secondary_y = False)
+    fig.add_trace(go.Scatter(x=pred48_df['recTime'], y=pred48_df['tem_coil_loc'], mode='lines+markers', name='48시간후 코일온도',
+                             opacity=0.8, marker_color='rgb(245,73,19)'), secondary_y = False)
+
+    fig.add_trace(go.Scatter(x=env_df['recTime'], y=env_df['tem_dewpoint_in_loc'], mode='lines+markers',  name='이슬점',
+                             opacity=0.8, marker_color='darkgreen'), secondary_y = False)
+    fig.add_trace(go.Scatter(x=pred24_df['recTime'], y=pred24_df['tem_dewpoint_in_loc'], mode='lines+markers', name='24시간후 이슬점',
+                             opacity=0.8, marker_color='darkgreen'), secondary_y = False)
+    fig.add_trace(go.Scatter(x=pred48_df['recTime'], y=pred48_df['tem_dewpoint_in_loc'], mode='lines+markers', name='48시간후 이슬점',
+                             opacity=0.8, marker_color='darkgreen'), secondary_y = False)
 
     fig.add_trace(go.Bar(x=env_df['recTime'], y=env_df['hum_in_loc'],  name='습도',
                              opacity=0.8, marker_color='skyblue'), secondary_y = True)
-
     fig.add_trace(go.Bar(x=pred24_df['recTime'], y=pred24_df['hum_in_loc'],  name='24시간후 습도',
                              opacity=0.8, marker_color='skyblue'), secondary_y = True)
-
     fig.add_trace(go.Bar(x=pred48_df['recTime'], y=pred48_df['hum_in_loc'],  name='48시간후 습도',
                              opacity=0.8, marker_color='skyblue'), secondary_y = True)
-
-    fig.add_trace(go.Scatter(x=env_df['recTime'], y=env_df['tem_dewpoint_in_loc'], mode='lines+markers',  name='이슬점',
-                             opacity=0.8, marker_color='green'), secondary_y = False)
-
-    fig.add_trace(go.Scatter(x=pred24_df['recTime'], y=pred24_df['tem_dewpoint_in_loc'], mode='lines+markers', name='24시간후 이슬점',
-                             opacity=0.8, marker_color='green'), secondary_y = False)
-
-    fig.add_trace(go.Scatter(x=pred48_df['recTime'], y=pred48_df['tem_dewpoint_in_loc'], mode='lines+markers', name='48시간후 이슬점',
-                             opacity=0.8, marker_color='green'), secondary_y = False)
     
 
-    fig.update_layout(title='<b>Today Factory Environment</b>',barmode='overlay')
-
+    fig.update_layout(title='<b>Today Factory Environment</b>',barmode='overlay', yaxis2=dict(showgrid=False, zeroline=False))
+    fig.update_traces(yaxis='y2', selector={'type':'bar'}, marker_color='rgb(158,202,225)', marker_line_color='rgb(8,48,107)',
+                  marker_line_width=1.0, opacity=0.5)
     fig.update_xaxes(title_text='<b>날짜</b>')
-    fig.update_yaxes(title_text='<b>ºC</b>')
-    fig.update_yaxes(title_text='<b>%</b>', secondary_y=True)
+    fig.update_yaxes(title_text='<b>[ 온도(ºC) ]</b>')
+    fig.update_yaxes(title_text='<b>[ 상대습도(%) ]</b>', secondary_y=True)
 
     plot_div = plot(fig, output_type='div')
 
