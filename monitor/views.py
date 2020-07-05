@@ -16,12 +16,6 @@ import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
 
-<<<<<<< HEAD
-from .models import PlantEnviron, WeatherForecast, Prediction
-# from IPython import embed
-# Create your views here.
-from fcm_django.models import FCMDevice
-=======
 
 from django.core import mail
 from django.core.mail import EmailMessage
@@ -30,7 +24,6 @@ from django.utils.html import strip_tags
 from django.http import HttpResponse
 
 
->>>>>>> 3e5c1d31822fc1fbc49d0bde081f3a2d2bb620fd
 
 @login_required
 def index(request):
@@ -74,6 +67,13 @@ def loc(request, plant, loc):
     pred24_df.columns = [re.sub('\d', '', col) for col in pred24_df.columns]
     pred48_df.columns = [re.sub('\d', '', col) for col in pred48_df.columns]
 
+    #이슬점
+    def dewpoint(temp, humid):
+    return ((243.12 *((17.62 * temp /(243.12 + temp)) + np.log(humid / 100.0))) 
+            / (17.62-((17.62 * temp / (243.12 + temp)) + np.log(humid/ 100.0))))
+
+    env_df = dewpoint(env_df['tem_in_loc'], env_df['hum_in_loc'])
+
     # #시각화
     fig = go.Figure()
 
@@ -81,10 +81,20 @@ def loc(request, plant, loc):
                              opacity=0.8, marker_color='red'))
 
     fig.add_trace(go.Scatter(x=pred24_df['recTime'], y=pred24_df['tem_in_loc'], mode='lines+markers', name='24시간후 온도',
-                             opacity=0.8, marker_color='green'))
+                             opacity=0.8, marker_color='darkred'))
 
     fig.add_trace(go.Scatter(x=pred48_df['recTime'], y=pred48_df['tem_in_loc'], mode='lines+markers', name='48시간후 온도',
-                             opacity=0.8, marker_color='orange'))
+                             opacity=0.8, marker_color='darkred'))
+
+    fig.add_trace(go.Scatter(x=env_df['recTime'], y=env_df['hum_in_loc'], mode='lines+markers', name='습도',
+                             opacity=0.8, marker_color='blue'))
+
+    fig.add_trace(go.Scatter(x=pred24_df['recTime'], y=pred24_df['hum_in_loc'], mode='lines+markers', name='24시간후 습도',
+                             opacity=0.8, marker_color='darkblue'))
+
+    fig.add_trace(go.Scatter(x=pred48_df['recTime'], y=pred48_df['hum_in_loc'], mode='lines+markers', name='48시간후 습도',
+                             opacity=0.8, marker_color='darkblue'))
+    
 
     fig.update_layout(title='<b>Today Factory Environment</b>', xaxis_title='Date', yaxis_title='Scale')
 
