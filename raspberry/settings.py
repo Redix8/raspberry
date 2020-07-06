@@ -162,8 +162,8 @@ REST_FRAMEWORK = {
 # 3. https://myaccount.google.com/lesssecureapps >> 보안 수준이 낮은 앱 허용
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = '메일 계정'
-EMAIL_HOST_PASSWORD = '비밀번호'
+EMAIL_HOST_USER = os.environ['EMAIL_ACCOUNT']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD']
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
