@@ -1,34 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>결로 발생 경보</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>HTML Email Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      
     <style>
-        p {
-            font-size: 1.5em;
-            margin-bottom: 1.2em;
+        table {
+        border-collapse: collapse;
         }
-        a {
-            font-weight: bold;
-            color:crimson;
+
+        table, th, td {
+        border: 1px solid black;
+        text-align: center;
         }
-        span {
-            font-weight: bold;
-            color:crimson;
+        #header {
+            background-color: #838583;
+        }
+        #yes {
+            background-color: crimson;
+            opacity: 0.6;
         }
     </style>
 </head>
 
 
 <body>
-    {% for plant , time , loc in alert_list %}
-    <div>
-        <p>
-            <span>Plant{{ plant }}</span>의 <span>Loc{{loc}}</span>에서 <span>{{time}}시간 후</span> 결로 발생이 예상됩니다.
-            <a href="http://127.0.0.1:8000/monitor/plant/{{ plant }}/loc/{{ loc }}">바로가기</a>  
-        </p>  
-    </div>
-    {% endfor %}
+    <h3>{{ env.recTime|date:'현재 시간 : Y.m.d. H:00' }}</h3>
+
+    <table border="1" cellpadding="0" cellspacing='0' width="100%">
+        <tr id="header">
+            <th scope="col">Location</th>
+            <th scope="col">현재 결로상태</th>
+            <th scope="col">24시간 결로여부</th>
+            <th scope="col">48시간 결로여부</th>
+        </tr>
+
+        <tr>
+            <th scope="row">LOC1</th>
+            <td class="{{ env.cond_loc1|yesno:"table-danger,," }}">{{ env.cond_loc1|yesno:"YES, NO, ERR" }}</td>
+            <td class="{{ cond24.cond_loc1|yesno:"table-danger,," }}">{{ cond24.cond_loc1|yesno:"YES, NO, ERR" }}</td>
+            <td class="{{ cond48.cond_loc1|yesno:"table-danger,," }}">{{ cond48.cond_loc1|yesno:"YES, NO, ERR" }}</td>
+        </tr>
+        
+        <tr>
+            <th scope="row">LOC2</th>
+            <td class="{{ env.cond_loc2|yesno:"table-danger,," }}">{{ env.cond_loc2|yesno:"YES, NO, ERR" }}</td>
+            <td class="{{ cond24.cond_loc2|yesno:"table-danger,," }}">{{ cond24.cond_loc2|yesno:"YES, NO, ERR" }}</td>
+            <td class="{{ cond48.cond_loc2|yesno:"table-danger,," }}">{{ cond48.cond_loc2|yesno:"YES, NO, ERR" }}</td>
+        </tr>
+        <tr>
+            <th scope="row">LOC3</th>
+            <td class="{{ env.cond_loc3|yesno:"table-danger,," }}">{{ env.cond_loc3|yesno:"YES, NO, ERR" }}</td>
+            <td class="{{ cond24.cond_loc3|yesno:"table-danger,," }}">{{ cond24.cond_loc3|yesno:"YES, NO, ERR" }}</td>
+            <td class="{{ cond48.cond_loc3|yesno:"table-danger,," }}">{{ cond48.cond_loc3|yesno:"YES, NO, ERR" }}</td>
+        </tr>
+    </table>
+
+    <table border="1" cellpadding="0" cellspacing='0' width="50%" style="margin-top: 5em;">
+        <tr id="header">
+            <th scope="col">Location</th>
+            <th scope="col">온도</th>
+            <th scope="col">습도</th>
+            <th scope="col">코일온도</th>
+            <th scope="col">외부온도</th>
+            <th scope="col">외부습도</th>
+        </tr>
+
+        <tr>
+            <th scope="row">LOC1</th>
+            <td>{{ env.tem_in_loc1|floatformat:2 }}</td>
+            <td>{{ env.hum_in_loc1|floatformat:2 }}</td>
+            <td>{{ env.tem_coil_loc1|floatformat:2 }}</td>
+            <td>{{ env.tem_out_loc1|floatformat:2 }}</td>
+            <td>{{ env.hum_out_loc1|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <th scope="row">LOC2</th>
+            <td>{{ env.tem_in_loc2|floatformat:2 }}</td>
+            <td>{{ env.hum_in_loc2|floatformat:2 }}</td>
+            <td>{{ env.tem_coil_loc2|floatformat:2 }}</td>
+            <td>{{ env.tem_out_loc1|floatformat:2 }}</td>
+            <td>{{ env.hum_out_loc1|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <th scope="row">LOC3</th>
+            <td>{{ env.tem_in_loc3|floatformat:2 }}</td>
+            <td>{{ env.hum_in_loc3|floatformat:2 }}</td>
+            <td>{{ env.tem_coil_loc3|floatformat:2 }}</td>
+            <td>{{ env.tem_out_loc1|floatformat:2 }}</td>
+            <td>{{ env.hum_out_loc1|floatformat:2 }}</td>
+        </tr>
+    </table>
+
 </body>
 </html>

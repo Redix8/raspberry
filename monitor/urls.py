@@ -10,5 +10,5 @@ urlpatterns = [
     path('plant/<int:plant>', views.plant, name='plant'),
     path('plant/<int:plant>/loc/<int:loc>', views.loc, name='loc'),
     path('visualization/', views.visualization, name='visualization'),
-    path('email/',views.sendMail, name='sendmail'),
+    path('email/<int:plant>',views.sendMail, name='sendmail'),
 ]
