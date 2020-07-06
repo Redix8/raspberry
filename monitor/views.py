@@ -29,7 +29,9 @@ from django.http import HttpResponse
 
 @login_required
 def index(request):
-
+    context = {
+        'plant':0
+    }
     return render(request, 'monitor/index.html', context)
 
 

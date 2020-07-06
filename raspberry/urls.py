@@ -31,7 +31,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')), #로그인
 
     #path('plotly_django_tutorial/', include('plotly_django_tutorial.urls')),
-    path('', lambda r: redirect("monitor:index"), name='root'),
+    path('', lambda r: redirect("monitor/plant/1"), name='root'),
 
     url(r'^', include(router.urls))
 ]
