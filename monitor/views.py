@@ -29,9 +29,7 @@ from django.http import HttpResponse
 
 @login_required
 def index(request):
-    context = {
-        'plant': 0
-    }
+
     return render(request, 'monitor/index.html', context)
 
 
@@ -67,6 +65,8 @@ def loc(request, plant, loc):
     pred24 = Prediction.objects.order_by(F('recTime').desc()).filter(plant=plant).filter(forecast='24')[:24]
     pred48 = Prediction.objects.order_by(F('recTime').desc()).filter(plant=plant).filter(forecast='48')[:24]
 
+
+
     env_df = env.to_dataframe().sort_values(by=['recTime'])
     pred24_df = pred24.to_dataframe().sort_values(by=['recTime'])
     pred24_df['recTime'] = pred24_df['recTime'] + pd.offsets.Hour(24)
@@ -84,6 +84,8 @@ def loc(request, plant, loc):
     pred24_df.columns = [re.sub('\d', '', col) for col in pred24_df.columns]
     pred48_df.columns = [re.sub('\d', '', col) for col in pred48_df.columns]
 
+    cond24 = pred24_df.filter(regex='cond').apply(lambda x: any(x))
+    cond48 = pred48_df.filter(regex='cond').apply(lambda x: any(x))
     #이슬점
     def dewpoint(temp, humid):
         return ((243.12 *((17.62 * temp /(243.12 + temp)) + np.log(humid / 100.0))) 
@@ -149,8 +151,8 @@ def loc(request, plant, loc):
         'plot_div': plot_div,
         'pred24': pred24_df.iloc[-1],
         'pred48': pred48_df.iloc[-1],
-        # 'x': x_data,
-        # 'y': y_data,
+        'cond24': cond24,
+        'cond48': cond48,
     }
     return render(request, 'monitor/loc.html', context)
 
