@@ -35,6 +35,7 @@ plant1_new = pd.read_csv('.data/plant1_test_split.csv', parse_dates=[0])
 plant2_new = pd.read_csv('.data/plant2_test_split.csv', parse_dates=[0])
 forecast = read_frame(WeatherForecast.objects.all())
 Prediction.objects.all().delete()
+devices = FCMDevice.objects.all()
 
 for idx in tqdm(range(len(plant1_new))):
     start_time = time.time()
@@ -291,14 +292,27 @@ for idx in tqdm(range(len(plant1_new))):
     # update는 1시간마다 이루어져야 하지만 시뮬레이션을 위해서 임의 시간으로 설정한다.
 
     # test용 break
-    if idx > 30:
-        devices = FCMDevice.objects.all()
-        devices.send_message("update", "prediction updated")
+    cond_col = ['cond_loc1', 'cond_loc2', 'cond_loc3']
 
-        while time.time() - start_time < 30:  # 30초
+    if idx > 30:
+        if plant1_save_24.loc[0, cond_col].any():
+            location = f"{[f'LOC{i+1}' for i,x in enumerate(plant1_save_24.loc[0, cond_col]) if x]}"
+            devices.send_message("1공장 결로발생경보", f"1공장 {location}에 24시간 이내에 결로가 발생 예정입니다.")
+
+        if plant1_save_48.loc[0, cond_col].any():
+            location = f"{[f'LOC{i+1}' for i,x in enumerate(plant1_save_48.loc[0, cond_col]) if x]}"
+            devices.send_message("1공장 결로발생경보", f"1공장 {location}에 48시간 이내에 결로가 발생 예정입니다.")
+
+        if plant2_save_24.loc[0, cond_col].any():
+            location = f"{[f'LOC{i+1}' for i,x in enumerate(plant2_save_24.loc[0, cond_col]) if x]}"
+            devices.send_message("2공장 결로발생경보", f"2공장 {location}에 24시간 이내에 결로가 발생 예정입니다.")
+
+        if plant2_save_48.loc[0, cond_col].any():
+            location = f"{[f'LOC{i+1}' for i,x in enumerate(plant2_save_48.loc[0, cond_col]) if x]}"
+            devices.send_message("2공장 결로발생경보", f"2공장 {location}에 48시간 이내에 결로가 발생 예정입니다.")
+
+        while time.time() - start_time < 10:  # 10초
             continue
-        if idx > 60:
-            break
     # print('Data Updated')
 
 
